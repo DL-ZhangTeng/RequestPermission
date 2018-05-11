@@ -44,6 +44,7 @@ public class FragmentActivitySource implements Sourse {
     public boolean shouldShowRequestPermissionRationale(Rationale rationale) {
         return rationale.shouldShowRequestPermissionRationale(getContext());
     }
+
     @Override
     public void requestPermissions(Request request, int permissionCode, Callback callback) {
         request.requestPermissions(getContext(), permissionCode, callback);

@@ -1,9 +1,7 @@
 package com.zhangteng.androidpermission;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
@@ -85,11 +83,6 @@ public class AndroidPermission {
         private SettingService settingService;
         private static AndroidPermission instance = null;
 
-        public Buidler with(Sourse sourse) {
-            this.sourse = sourse;
-            return this;
-        }
-
         public Buidler with(Activity activity) {
             this.sourse = new ActivityScource(activity);
             return this;
@@ -112,6 +105,11 @@ public class AndroidPermission {
 
         public Buidler with(android.support.v4.app.Fragment fragment) {
             this.sourse = new SupportFragmentSource(fragment);
+            return this;
+        }
+
+        public Buidler sourse(Sourse sourse) {
+            this.sourse = sourse;
             return this;
         }
 

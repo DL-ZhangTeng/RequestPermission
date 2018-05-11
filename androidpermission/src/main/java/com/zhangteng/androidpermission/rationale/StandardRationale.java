@@ -1,10 +1,8 @@
 package com.zhangteng.androidpermission.rationale;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.app.FragmentActivity;
 
 import java.util.Arrays;
 import java.util.List;
