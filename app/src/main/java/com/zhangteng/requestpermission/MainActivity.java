@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
                     public void failure() {
                         Toast.makeText(MainActivity.this, "failure", Toast.LENGTH_SHORT).show();
                     }
+
+                    @Override
+                    public void nonExecution() {
+                        Toast.makeText(MainActivity.this, "nonExecution", Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .build();
         //用于初次请求权限

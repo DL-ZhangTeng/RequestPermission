@@ -8,4 +8,6 @@ public interface Callback {
     void success();
 
     void failure();
+
+    void nonExecution();
 }
