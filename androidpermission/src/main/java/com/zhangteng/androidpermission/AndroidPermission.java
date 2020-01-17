@@ -69,7 +69,7 @@ public class AndroidPermission {
             } else {
                 sourse.toSetting(settingService, requestCode);
             }
-        }else {
+        } else {
             if (callback != null) {
                 callback.nonExecution();
             }
@@ -87,7 +87,6 @@ public class AndroidPermission {
         private Checker checker;
         private Callback callback;
         private SettingService settingService;
-        private static AndroidPermission instance = null;
 
         public Buidler with(Activity activity) {
             this.sourse = new ActivityScource(activity);
@@ -161,12 +160,7 @@ public class AndroidPermission {
             if (this.settingService == null) {
                 this.settingService = new PermissionSetting(sourse);
             }
-            if (instance == null) {
-                instance = new AndroidPermission(this);
-            } else {
-                instance.setBuidler(this);
-            }
-            return instance;
+            return new AndroidPermission(this);
         }
     }
 }
