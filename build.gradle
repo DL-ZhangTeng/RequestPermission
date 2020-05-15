@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/duoluo9/android'}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
@@ -19,6 +20,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/duoluo9/android'}
     }
 
     //此处添加的UTF-8格式
