@@ -2,7 +2,7 @@ package com.zhangteng.androidpermission.source;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.checker.Checker;

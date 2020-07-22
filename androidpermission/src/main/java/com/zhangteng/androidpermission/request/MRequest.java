@@ -2,7 +2,7 @@ package com.zhangteng.androidpermission.request;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.zhangteng.androidpermission.PermissionActivity;
 import com.zhangteng.androidpermission.callback.Callback;

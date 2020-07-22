@@ -2,8 +2,8 @@ package com.zhangteng.androidpermission;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.checker.Checker;
@@ -108,7 +108,7 @@ public class AndroidPermission {
             return this;
         }
 
-        public Buidler with(android.support.v4.app.Fragment fragment) {
+        public Buidler with(androidx.fragment.app.Fragment fragment) {
             this.sourse = new SupportFragmentSource(fragment);
             return this;
         }

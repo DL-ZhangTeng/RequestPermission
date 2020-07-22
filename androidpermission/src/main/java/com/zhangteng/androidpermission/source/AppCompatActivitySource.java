@@ -2,7 +2,7 @@ package com.zhangteng.androidpermission.source;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.checker.Checker;
