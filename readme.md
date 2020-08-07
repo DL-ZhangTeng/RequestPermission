@@ -120,6 +120,9 @@ v1.0.0| 内存优化| 15 May 2020
 邮箱：763263311@qq.com/ztxiaoran@foxmail.com
 
 ## License
+
+MIT License
+
 Copyright (c) [2020] [Swing]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
