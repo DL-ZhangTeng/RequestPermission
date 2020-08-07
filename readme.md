@@ -103,7 +103,7 @@ implementation 'com.zhangteng.androidpermission:androidpermission:1.1.0'
 ```
 
 ## 混淆
--keep public class com.zhangteng.**.**{ *; }
+-keep public class com.zhangteng.**{ *; }
 ## 历史版本
 版本| 更新| 更新时间
 -------- | ----- | -----
