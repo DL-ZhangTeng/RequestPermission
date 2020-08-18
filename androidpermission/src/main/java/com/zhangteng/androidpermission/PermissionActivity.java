@@ -7,13 +7,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.zhangteng.androidpermission.callback.Callback;
 
@@ -62,16 +63,23 @@ public final class PermissionActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (mcallback != null) {
-           if (requestCode == permissionsCode){
-               if (grantResults.length > 0
-                       && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   mcallback.success();
-               } else {
-                   mcallback.failure();
-               }
-           }else {
-               mcallback.nonExecution();
-           }
+            if (requestCode == permissionsCode) {
+                if (grantResults.length > 0) {
+                    for (int grantResult : grantResults) {
+                        if (grantResult == PackageManager.PERMISSION_DENIED) {
+                            mcallback.failure();
+                            mcallback = null;
+                            finish();
+                            return;
+                        }
+                    }
+                    mcallback.success();
+                } else {
+                    mcallback.failure();
+                }
+            } else {
+                mcallback.nonExecution();
+            }
             mcallback = null;
         }
         finish();
