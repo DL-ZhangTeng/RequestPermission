@@ -1,12 +1,12 @@
 package com.zhangteng.requestpermission;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhangteng.androidpermission.AndroidPermission;
 import com.zhangteng.androidpermission.Permission;
@@ -41,24 +41,24 @@ public class MainActivity extends AppCompatActivity {
                 .permission(permissions)
                 .callback(new Callback() {
                     @Override
-                    public void success() {
+                    public void success(Activity permissionActivity) {
                         Toast.makeText(MainActivity.this, "success", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void failure() {
+                    public void failure(Activity permissionActivity) {
                         Toast.makeText(MainActivity.this, "failure", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void nonExecution() {
+                    public void nonExecution(Activity permissionActivity) {
                         Toast.makeText(MainActivity.this, "nonExecution", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .build();
         //用于初次请求权限
-        androidPermission.excute();
+        androidPermission.execute();
         //用于再次请求权限
-//        androidPermission.excute(100);
+//        androidPermission.execute(100);
     }
 }

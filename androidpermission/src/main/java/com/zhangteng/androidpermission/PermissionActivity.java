@@ -36,7 +36,6 @@ public final class PermissionActivity extends Activity {
 
     public static void requestPermission(Context context, String[] permissions, int permissionCode, Callback callback) {
         mcallback = callback;
-
         Intent intent = new Intent(context, PermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(KEY_INPUT_PERMISSIONS, permissions);
@@ -48,7 +47,6 @@ public final class PermissionActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         invasionStatusBar(this);
-
         Intent intent = getIntent();
         permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
         permissionsCode = intent.getIntExtra(KEY_PERMISSIONCODE, 1);
@@ -67,18 +65,18 @@ public final class PermissionActivity extends Activity {
                 if (grantResults.length > 0) {
                     for (int grantResult : grantResults) {
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
-                            mcallback.failure();
+                            mcallback.failure(this);
                             mcallback = null;
                             finish();
                             return;
                         }
                     }
-                    mcallback.success();
+                    mcallback.success(this);
                 } else {
-                    mcallback.failure();
+                    mcallback.failure(this);
                 }
             } else {
-                mcallback.nonExecution();
+                mcallback.nonExecution(this);
             }
             mcallback = null;
         }
