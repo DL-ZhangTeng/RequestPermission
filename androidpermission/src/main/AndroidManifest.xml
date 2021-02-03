@@ -2,6 +2,7 @@
     package="com.zhangteng.androidpermission">
 
     <application>
-        <activity android:name=".PermissionActivity" />
+        <activity android:name=".PermissionActivity"
+            android:theme="@style/PermissionActivityTheme"/>
     </application>
 </manifest>
