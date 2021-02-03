@@ -27,16 +27,13 @@ import java.io.Serializable;
  * Created by swing on 2018/5/10.
  */
 public class AndroidPermission {
+    private static final int PERMISSION_CODE = 110000;
     private Sourse sourse;
     private Request request;
     private Rationale rationale;
     private Checker checker;
     private SettingService settingService;
     private Callback callback;
-
-    private Buidler buidler = null;
-
-    private static final int PERMISSION_CODE = 110000;
 
     public AndroidPermission(Buidler buidler) {
         setBuidler(buidler);
@@ -49,29 +46,28 @@ public class AndroidPermission {
         this.request = buidler.request;
         this.callback = buidler.callback;
         this.settingService = buidler.settingService;
-        this.buidler = buidler;
     }
 
-    public void excute() {
+    public void execute() {
         if (!sourse.checkSelfPermission(checker)) {
             sourse.requestPermissions(request, PERMISSION_CODE, callback);
         } else {
             if (callback != null) {
-                callback.nonExecution();
+                callback.nonExecution(null);
             }
         }
     }
 
-    public void excute(int requestCode) {
+    public void execute(int settingRequestCode) {
         if (!sourse.checkSelfPermission(checker)) {
             if (sourse.shouldShowRequestPermissionRationale(rationale)) {
                 sourse.requestPermissions(request, PERMISSION_CODE, callback);
             } else {
-                sourse.toSetting(settingService, requestCode);
+                sourse.toSetting(settingService, settingRequestCode);
             }
         } else {
             if (callback != null) {
-                callback.nonExecution();
+                callback.nonExecution(null);
             }
         }
     }
