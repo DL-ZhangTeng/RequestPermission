@@ -2,6 +2,7 @@ package com.zhangteng.androidpermission.source;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhangteng.androidpermission.callback.Callback;
@@ -13,7 +14,7 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public class AppCompatActivitySource implements Sourse {
+public class AppCompatActivitySource implements Source {
     private AppCompatActivity appCompatActivity;
 
     public AppCompatActivitySource(AppCompatActivity appCompatActivity) {

@@ -12,7 +12,7 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public interface Sourse {
+public interface Source {
 
     Context getContext();
 

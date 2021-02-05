@@ -2,6 +2,7 @@ package com.zhangteng.androidpermission.source;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.zhangteng.androidpermission.callback.Callback;
@@ -13,7 +14,7 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public class FragmentActivitySource implements Sourse {
+public class FragmentActivitySource implements Source {
     private FragmentActivity fragmentActivity;
 
     public FragmentActivitySource(FragmentActivity fragmentActivity) {

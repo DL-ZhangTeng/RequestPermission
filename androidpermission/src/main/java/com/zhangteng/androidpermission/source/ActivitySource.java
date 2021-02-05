@@ -13,10 +13,10 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public class ActivityScource implements Sourse {
+public class ActivitySource implements Source {
     private Activity activity;
 
-    public ActivityScource(Activity activity) {
+    public ActivitySource(Activity activity) {
         this.activity = activity;
     }
 

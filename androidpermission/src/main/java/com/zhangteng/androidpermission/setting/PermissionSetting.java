@@ -21,17 +21,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 
-import com.zhangteng.androidpermission.source.Sourse;
+import com.zhangteng.androidpermission.source.Source;
 
 public class PermissionSetting implements SettingService {
 
     private static final String MARK = Build.MANUFACTURER.toLowerCase();
 
-    private Sourse mSource;
+    private Source mSource;
 
-    public PermissionSetting(@NonNull Sourse source) {
+    public PermissionSetting(@NonNull Source source) {
         this.mSource = source;
     }
 
