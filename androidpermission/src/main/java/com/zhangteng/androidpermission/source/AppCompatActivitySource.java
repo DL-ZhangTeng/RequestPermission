@@ -13,7 +13,7 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public class AppCompatActivitySource implements Sourse {
+public class AppCompatActivitySource implements Source {
     private AppCompatActivity appCompatActivity;
 
     public AppCompatActivitySource(AppCompatActivity appCompatActivity) {

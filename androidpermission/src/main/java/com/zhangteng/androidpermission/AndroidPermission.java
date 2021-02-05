@@ -14,11 +14,11 @@ import com.zhangteng.androidpermission.request.Request;
 import com.zhangteng.androidpermission.request.RequestFactory;
 import com.zhangteng.androidpermission.setting.PermissionSetting;
 import com.zhangteng.androidpermission.setting.SettingService;
-import com.zhangteng.androidpermission.source.ActivityScource;
+import com.zhangteng.androidpermission.source.ActivitySource;
 import com.zhangteng.androidpermission.source.AppCompatActivitySource;
 import com.zhangteng.androidpermission.source.FragmentActivitySource;
 import com.zhangteng.androidpermission.source.FragmentSource;
-import com.zhangteng.androidpermission.source.Sourse;
+import com.zhangteng.androidpermission.source.Source;
 import com.zhangteng.androidpermission.source.SupportFragmentSource;
 
 import java.io.Serializable;
@@ -28,7 +28,7 @@ import java.io.Serializable;
  */
 public class AndroidPermission {
     private static final int PERMISSION_CODE = 110000;
-    private Sourse sourse;
+    private Source source;
     private Request request;
     private Rationale rationale;
     private Checker checker;
@@ -40,7 +40,7 @@ public class AndroidPermission {
     }
 
     private void setBuidler(Buidler buidler) {
-        this.sourse = buidler.sourse;
+        this.source = buidler.source;
         this.checker = buidler.checker;
         this.rationale = buidler.rationale;
         this.request = buidler.request;
@@ -49,8 +49,8 @@ public class AndroidPermission {
     }
 
     public void execute() {
-        if (!sourse.checkSelfPermission(checker)) {
-            sourse.requestPermissions(request, PERMISSION_CODE, callback);
+        if (!checkPermission()) {
+            requestPermissions();
         } else {
             if (callback != null) {
                 callback.nonExecution(null);
@@ -59,11 +59,11 @@ public class AndroidPermission {
     }
 
     public void execute(int settingRequestCode) {
-        if (!sourse.checkSelfPermission(checker)) {
-            if (sourse.shouldShowRequestPermissionRationale(rationale)) {
-                sourse.requestPermissions(request, PERMISSION_CODE, callback);
+        if (!checkPermission()) {
+            if (shouldShowRequestPermissionRationale()) {
+                requestPermissions();
             } else {
-                sourse.toSetting(settingService, settingRequestCode);
+                toSetting(settingRequestCode);
             }
         } else {
             if (callback != null) {
@@ -73,11 +73,23 @@ public class AndroidPermission {
     }
 
     public boolean checkPermission() {
-        return sourse.checkSelfPermission(checker);
+        return source.checkSelfPermission(checker);
+    }
+
+    public boolean shouldShowRequestPermissionRationale() {
+        return source.shouldShowRequestPermissionRationale(rationale);
+    }
+
+    public void requestPermissions() {
+        source.requestPermissions(request, PERMISSION_CODE, callback);
+    }
+
+    public void toSetting(int settingRequestCode) {
+        source.toSetting(settingService, settingRequestCode);
     }
 
     public static class Buidler implements Serializable {
-        private Sourse sourse;
+        private Source source;
         private Request request;
         private Rationale rationale;
         private Checker checker;
@@ -85,32 +97,32 @@ public class AndroidPermission {
         private SettingService settingService;
 
         public Buidler with(Activity activity) {
-            this.sourse = new ActivityScource(activity);
+            this.source = new ActivitySource(activity);
             return this;
         }
 
         public Buidler with(AppCompatActivity activity) {
-            this.sourse = new AppCompatActivitySource(activity);
+            this.source = new AppCompatActivitySource(activity);
             return this;
         }
 
         public Buidler with(FragmentActivity activity) {
-            this.sourse = new FragmentActivitySource(activity);
+            this.source = new FragmentActivitySource(activity);
             return this;
         }
 
         public Buidler with(Fragment fragment) {
-            this.sourse = new FragmentSource(fragment);
+            this.source = new FragmentSource(fragment);
             return this;
         }
 
         public Buidler with(android.support.v4.app.Fragment fragment) {
-            this.sourse = new SupportFragmentSource(fragment);
+            this.source = new SupportFragmentSource(fragment);
             return this;
         }
 
-        public Buidler sourse(Sourse sourse) {
-            this.sourse = sourse;
+        public Buidler source(Source source) {
+            this.source = source;
             return this;
         }
 
@@ -154,7 +166,7 @@ public class AndroidPermission {
 
         public AndroidPermission build() {
             if (this.settingService == null) {
-                this.settingService = new PermissionSetting(sourse);
+                this.settingService = new PermissionSetting(source);
             }
             return new AndroidPermission(this);
         }

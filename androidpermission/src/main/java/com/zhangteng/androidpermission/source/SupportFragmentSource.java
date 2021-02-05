@@ -13,7 +13,7 @@ import com.zhangteng.androidpermission.setting.SettingService;
 /**
  * Created by swing on 2018/5/10.
  */
-public class SupportFragmentSource implements Sourse {
+public class SupportFragmentSource implements Source {
 
     private Fragment fragment;
 
