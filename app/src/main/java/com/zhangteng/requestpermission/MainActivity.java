@@ -31,14 +31,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        String[] permissions = new String[]{
-                Permission.ACCESS_FINE_LOCATION,
-                Permission.ACCESS_COARSE_LOCATION,
-                Permission.READ_CALENDAR,
-                Permission.WRITE_CALENDAR};
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
-                .permission(permissions)
+                .permission(Permission.Group.CALENDAR)
                 .callback(new Callback() {
                     @Override
                     public void success(Activity permissionActivity) {
