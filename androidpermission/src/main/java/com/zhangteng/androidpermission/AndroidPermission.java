@@ -2,7 +2,9 @@ package com.zhangteng.androidpermission;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
@@ -89,6 +91,28 @@ public class AndroidPermission {
         source.toSetting(settingService, settingRequestCode);
     }
 
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (callback != null && source != null) {
+            Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
+            if (requestCode == PERMISSION_CODE) {
+                if (grantResults.length > 0) {
+                    for (int grantResult : grantResults) {
+                        if (grantResult == PackageManager.PERMISSION_DENIED) {
+                            callback.failure(activity);
+                            callback = null;
+                            return;
+                        }
+                    }
+                    callback.success(activity);
+                } else {
+                    callback.failure(activity);
+                }
+            } else {
+                callback.nonExecution(activity);
+            }
+        }
+    }
+
     public static class Buidler implements Serializable {
         private Source source;
         private Request request;
@@ -119,6 +143,9 @@ public class AndroidPermission {
 
         public Buidler with(androidx.fragment.app.Fragment fragment) {
             this.source = new SupportFragmentSource(fragment);
+            if (fragment instanceof Request) {
+                request = (Request) fragment;
+            }
             return this;
         }
 

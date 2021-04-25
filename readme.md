@@ -13,7 +13,7 @@ allprojects {
 implementation 'com.github.duoluo9:RequestPermission:1.1.0'
 ```
 
-## 使用
+## 使用默认透明背景PermissionActivity执行实际权限请求
 
 ```java
        AndroidPermission androidPermission = new AndroidPermission.Buidler()
@@ -82,12 +82,77 @@ implementation 'com.github.duoluo9:RequestPermission:1.1.0'
         }
     }
 ```
+## 使用自定义的页面执行实际请求（实现Request接口）
+
+```java
+public class MainActivity extends AppCompatActivity implements Request {
+
+    private AndroidPermission androidPermission;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && androidPermission.checkPermission()) {
+            Toast.makeText(MainActivity.this, "从设置页返回", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClick(View view) {
+        androidPermission = new AndroidPermission.Buidler()
+                .with(this)
+                //自定义的Request
+                .request(this)
+                .permission(Permission.Group.CALENDAR)
+                .callback(new Callback() {
+                    @Override
+                    public void success(Activity permissionActivity) {
+                        Toast.makeText(MainActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void failure(Activity permissionActivity) {
+                        Toast.makeText(MainActivity.this, "failure", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void nonExecution(Activity permissionActivity) {
+                        Toast.makeText(MainActivity.this, "nonExecution", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
+        //用于初次请求权限
+        androidPermission.execute();
+        //用于再次请求权限
+//        androidPermission.execute(100);
+    }
+
+    //execute()执行后调用的方法
+    @Override
+    public void requestPermissions(Context context, int permissionCode, Callback callback) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(Permission.Group.CALENDAR, permissionCode);
+        }
+    }
+    //请求完成后调用的方法
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        androidPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+}
+```
 
 ## 混淆
 -keep public class com.zhangteng.**.*{ *; }
 ## 历史版本
 版本| 更新| 更新时间
 -------- | ----- | -----
+v1.1.4| 支持自定义Request|25 April 2021
 v1.1.0| 迁移到androidx|22 July 2020
 v1.0.0| 内存优化| 15 May 2020
 

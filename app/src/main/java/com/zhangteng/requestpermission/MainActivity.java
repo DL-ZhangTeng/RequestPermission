@@ -1,18 +1,22 @@
 package com.zhangteng.requestpermission;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhangteng.androidpermission.AndroidPermission;
 import com.zhangteng.androidpermission.Permission;
 import com.zhangteng.androidpermission.callback.Callback;
+import com.zhangteng.androidpermission.request.Request;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Request {
 
     private AndroidPermission androidPermission;
 
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
+                .request(this)
                 .permission(Permission.Group.CALENDAR)
                 .callback(new Callback() {
                     @Override
@@ -55,5 +60,17 @@ public class MainActivity extends AppCompatActivity {
         androidPermission.execute();
         //用于再次请求权限
 //        androidPermission.execute(100);
+    }
+
+    @Override
+    public void requestPermissions(Context context, int permissionCode, Callback callback) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(Permission.Group.CALENDAR, permissionCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        androidPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
