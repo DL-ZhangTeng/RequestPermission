@@ -37,6 +37,12 @@ public class Permission {
     public static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
     public static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
 
+    /**
+     * @description: 如果Android11存储权限与其它Android6权限同时请求时，只请求MANAGE_EXTERNAL_STORAGE权限，其它权限需要重新execute
+     * (是否同时执行可以在自定义的Request中处理，在PermissionActivity的onCreate中互斥执行)
+     */
+    public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";
+
     public static final class Group {
         public static final String[] CALENDAR = new String[]{
                 Permission.READ_CALENDAR,
@@ -76,6 +82,12 @@ public class Permission {
         public static final String[] STORAGE = new String[]{
                 Permission.READ_EXTERNAL_STORAGE,
                 Permission.WRITE_EXTERNAL_STORAGE};
+
+        /**
+         * @description: android11请求存储权限时使用
+         */
+        public static final String[] STORAGE_R = new String[]{
+                Permission.MANAGE_EXTERNAL_STORAGE};
     }
 
 }

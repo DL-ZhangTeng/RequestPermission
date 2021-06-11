@@ -3,7 +3,11 @@ package com.zhangteng.androidpermission.checker;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
+
+import com.zhangteng.androidpermission.Permission;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +26,16 @@ public class StandardChecker implements Checker {
     public boolean hasPermission(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             for (String permission : permissions) {
+                //如果是Android11并且请求读写权限时检查权限
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (permission.equals(Permission.MANAGE_EXTERNAL_STORAGE)) {
+                        if (!Environment.isExternalStorageManager()) {
+                            return false;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
                 int result = context.checkPermission(permission, android.os.Process.myPid(), android.os.Process.myUid());
                 if (result == PackageManager.PERMISSION_DENIED) {
                     return false;

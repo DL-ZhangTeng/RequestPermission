@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.zhangteng.androidpermission.callback.Callback;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by swing on 2018/5/10.
@@ -51,7 +57,22 @@ public final class PermissionActivity extends Activity {
         permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
         permissionsCode = intent.getIntExtra(KEY_PERMISSIONCODE, 1);
         if (permissions != null && mcallback != null) {
-            requestPermissions(permissions, permissionsCode);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                List<String> permissionsList = Arrays.asList(permissions);
+                if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
+                    if (Environment.isExternalStorageManager()) {
+                        requestPermissions(permissions, permissionsCode);
+                    } else {
+                        Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                        intent1.setData(Uri.parse("package:" + PermissionActivity.this.getPackageName()));
+                        startActivityForResult(intent1, permissionsCode);
+                    }
+                } else {
+                    requestPermissions(permissions, permissionsCode);
+                }
+            } else {
+                requestPermissions(permissions, permissionsCode);
+            }
         } else {
             mcallback = null;
             finish();
@@ -63,8 +84,9 @@ public final class PermissionActivity extends Activity {
         if (mcallback != null) {
             if (requestCode == permissionsCode) {
                 if (grantResults.length > 0) {
-                    for (int grantResult : grantResults) {
-                        if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        int grantResult = grantResults[i];
+                        if (grantResult == PackageManager.PERMISSION_DENIED && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                             mcallback.failure(this);
                             mcallback = null;
                             finish();
@@ -79,6 +101,23 @@ public final class PermissionActivity extends Activity {
                 mcallback.nonExecution(this);
             }
             mcallback = null;
+        }
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == permissionsCode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                if (mcallback != null) {
+                    mcallback.success(this);
+                }
+            } else {
+                if (mcallback != null) {
+                    mcallback.failure(this);
+                }
+            }
         }
         finish();
     }

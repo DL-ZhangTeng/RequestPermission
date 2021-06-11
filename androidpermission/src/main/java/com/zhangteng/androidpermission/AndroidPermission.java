@@ -2,9 +2,13 @@ package com.zhangteng.androidpermission;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
@@ -30,7 +34,7 @@ import java.io.Serializable;
  * Created by swing on 2018/5/10.
  */
 public class AndroidPermission {
-    private static final int PERMISSION_CODE = 110000;
+    private static final int PERMISSION_CODE = 1 << 15;
     private Source source;
     private Request request;
     private Rationale rationale;
@@ -91,13 +95,21 @@ public class AndroidPermission {
         source.toSetting(settingService, settingRequestCode);
     }
 
+    /**
+     * @param requestCode  请求code
+     * @param permissions  权限
+     * @param grantResults 权限结果
+     * @return void
+     * @description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (callback != null && source != null) {
             Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
             if (requestCode == PERMISSION_CODE) {
                 if (grantResults.length > 0) {
-                    for (int grantResult : grantResults) {
-                        if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        int grantResult = grantResults[i];
+                        if (grantResult == PackageManager.PERMISSION_DENIED && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                             callback.failure(activity);
                             callback = null;
                             return;
@@ -109,6 +121,26 @@ public class AndroidPermission {
                 }
             } else {
                 callback.nonExecution(activity);
+            }
+        }
+    }
+
+    /**
+     * @description 自定义Request时接收权限结果, 在activity的onActivityResult中调用
+     */
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (callback != null && source != null) {
+            Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
+            if (requestCode == PERMISSION_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    if (callback != null) {
+                        callback.success(activity);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.failure(activity);
+                    }
+                }
             }
         }
     }
@@ -187,7 +219,7 @@ public class AndroidPermission {
                 this.rationale = new StandardRationale("", permissions);
             }
             if (this.request == null) {
-                this.request = new RequestFactory().creatRequest(permissions);
+                this.request = new RequestFactory().createRequest(permissions);
             }
             return this;
         }

@@ -7,7 +7,7 @@ import android.os.Build;
  */
 public class RequestFactory {
 
-    public Request creatRequest(String... permissions) {
+    public Request createRequest(String... permissions) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return new LRequest(permissions);
         } else {
