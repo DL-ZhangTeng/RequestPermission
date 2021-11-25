@@ -1,5 +1,5 @@
 # 6.0权限请求AndroidPermission
-AndroidPermission是一个Android6.0+动态权限请求库。（该项目是3年前借鉴某位仁兄的代码下完成的权限请求库后来又经过了多次优化，但时间久远已经找不到该仁兄，如有代码侵权请联系我）
+AndroidPermission是一个Android6.0+动态权限请求库。
 [GitHub仓库地址](https://github.com/DL-ZhangTeng/RequestPermission)
 ## 引入
 ### gradle
