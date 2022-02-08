@@ -152,15 +152,14 @@ public class MainActivity extends AppCompatActivity implements Request {
 ## 历史版本
 版本| 更新| 更新时间
 -------- | ----- | -----
+v1.2.0| 重新构建|2022/1/26 at 12:42
+v1.1.5| 兼容Android11的存储权限|2021/6/11 at 15:29
 v1.1.4| 支持自定义Request|25 April 2021
 v1.1.0| 迁移到androidx|22 July 2020
 v1.0.0| 内存优化| 15 May 2020
 
 ## 赞赏
-如果您喜欢AndroidPermission，或感觉AndroidPermission帮助到了您，可以点右上角“Star”支持一下，您的支持就是我的动力，谢谢您也可以扫描下面的二维码，请作者喝杯茶 tea
-
-![支付宝收款码](https://img-blog.csdnimg.cn/20200807160902219.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2R1b2x1bzk=,size_16,color_FFFFFF,t_70)
-![微信收款码](https://img-blog.csdnimg.cn/20200807160902112.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2R1b2x1bzk=,size_16,color_FFFFFF,t_70)
+如果您喜欢AndroidPermission，或感觉AndroidPermission帮助到了您，可以点右上角“Star”支持一下，您的支持就是我的动力，谢谢您
 
 ## 联系我
 邮箱：763263311@qq.com/ztxiaoran@foxmail.com
