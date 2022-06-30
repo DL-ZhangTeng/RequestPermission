@@ -10,7 +10,7 @@ allprojects {
     }
 }
 
-implementation 'com.github.DL-ZhangTeng:RequestPermission:1.1.0'
+implementation 'com.github.DL-ZhangTeng:RequestPermission:1.2.0'
 ```
 
 ## 使用默认透明背景PermissionActivity执行实际权限请求
