@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements Request {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         androidPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
