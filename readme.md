@@ -1,8 +1,12 @@
 # 6.0权限请求AndroidPermission
+
 AndroidPermission是一个Android6.0+动态权限请求库。
 [GitHub仓库地址](https://github.com/DL-ZhangTeng/RequestPermission)
+
 ## 引入
+
 ### gradle
+
 ```groovy
 allprojects {
     repositories {
@@ -10,7 +14,7 @@ allprojects {
     }
 }
 
-implementation 'com.github.DL-ZhangTeng:RequestPermission:1.2.0'
+implementation 'com.github.DL-ZhangTeng:RequestPermission:1.2.1'
 ```
 
 ## 使用默认透明背景PermissionActivity执行实际权限请求
@@ -31,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         permissions = new String[]{Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA};
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
-                .request(this)
                 .permission(permissions)
                 .callback(new Callback() {
                     @Override
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         //用于再次请求权限
 //        androidPermission.execute(100);
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
 ```
+
 ## 使用自定义的页面执行实际请求（实现Request接口）
 
 ```java
@@ -150,20 +154,26 @@ public class MainActivity extends AppCompatActivity implements Request {
 ```
 
 ## 混淆
+
 -keep public class com.zhangteng.**.*{ *; }
+
 ## 历史版本
-| 版本     | 更新               | 更新时间               |
-|--------|------------------|--------------------|
-| v1.2.0 | 重新构建             | 2022/1/26 at 12:42 |
-| v1.1.5 | 兼容Android11的存储权限 | 2021/6/11 at 15:29 |
-| v1.1.4 | 支持自定义Request     | 25 April 2021      |
-| v1.1.0 | 迁移到androidx      | 22 July 2020       |
-| v1.0.0 | 内存优化             | 15 May 2020        |
+
+| 版本     | 更新                     | 更新时间               |
+|--------|------------------------|--------------------|
+| v1.2.1 | Android11的存储写入权限拒绝结果过滤 | 2023/2/14 at 0:07  |
+| v1.2.0 | 重新构建                   | 2022/1/26 at 12:42 |
+| v1.1.5 | 兼容Android11的存储权限       | 2021/6/11 at 15:29 |
+| v1.1.4 | 支持自定义Request           | 25 April 2021      |
+| v1.1.0 | 迁移到androidx            | 22 July 2020       |
+| v1.0.0 | 内存优化                   | 15 May 2020        |
 
 ## 赞赏
+
 如果您喜欢AndroidPermission，或感觉AndroidPermission帮助到了您，可以点右上角“Star”支持一下，您的支持就是我的动力，谢谢您
 
 ## 联系我
+
 邮箱：763263311@qq.com/ztxiaoran@foxmail.com
 
 ## License

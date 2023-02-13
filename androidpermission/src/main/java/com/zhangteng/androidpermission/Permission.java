@@ -35,6 +35,12 @@ public class Permission {
     public static final String RECEIVE_MMS = "android.permission.RECEIVE_MMS";
 
     public static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
+    /**
+     * description: 写入权限在Android11中被废弃，Android10中可以通过requestLegacyExternalStorage关闭沙盒存储
+     * <uses-permission
+     * android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+     * android:maxSdkVersion="28" />
+     */
     public static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
 
     /**

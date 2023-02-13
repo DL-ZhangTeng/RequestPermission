@@ -109,10 +109,22 @@ public class AndroidPermission {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
-                        if (grantResult == PackageManager.PERMISSION_DENIED && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
-                            callback.failure(activity);
-                            callback = null;
-                            return;
+                        if (grantResult == PackageManager.PERMISSION_DENIED) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                //Android11+不响应存储权限WRITE_EXTERNAL_STORAGE请求失败结果
+                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                    callback.failure(activity);
+                                    callback = null;
+                                    return;
+                                }
+                            } else {
+                                //Android11以下不响应存储权限MANAGE_EXTERNAL_STORAGE请求失败结果
+                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                    callback.failure(activity);
+                                    callback = null;
+                                    return;
+                                }
+                            }
                         }
                     }
                     callback.success(activity);
