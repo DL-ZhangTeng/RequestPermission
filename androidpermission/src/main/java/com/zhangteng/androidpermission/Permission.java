@@ -102,7 +102,6 @@ public class Permission {
     public static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
     /**
      * description: 如果Android11存储权限与其它Android6权限同时请求时，只请求MANAGE_EXTERNAL_STORAGE权限，其它权限需要重新execute
-     *              (是否同时执行可以在自定义的Request中处理，在PermissionActivity的onCreate中互斥执行)
      */
     public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";
 
@@ -209,6 +208,9 @@ public class Permission {
                 Permission.READ_MEDIA_VIDEO,
                 Permission.READ_MEDIA_AUDIO};
 
+        /**
+         * description: 用于所有安卓版本请求文件读写权限，如果是11及以上不获取文件所有控制权限
+         */
         public static final String[] STORAGE_MEDIA = new String[]{
                 Permission.READ_EXTERNAL_STORAGE,
                 Permission.WRITE_EXTERNAL_STORAGE,
@@ -216,6 +218,9 @@ public class Permission {
                 Permission.READ_MEDIA_VIDEO,
                 Permission.READ_MEDIA_AUDIO};
 
+        /**
+         * description: 用于所有安卓版本请求文件读写权限，如果是11及以上获取文件所有控制权限
+         */
         public static final String[] STORAGE_ALL = new String[]{
                 Permission.MANAGE_EXTERNAL_STORAGE,
                 Permission.READ_EXTERNAL_STORAGE,

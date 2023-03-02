@@ -99,8 +99,7 @@ public class AndroidPermission {
      * @param requestCode  请求code
      * @param permissions  权限
      * @param grantResults 权限结果
-     * @return void
-     * @description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
+     * description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
      */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (callback != null && source != null) {
@@ -110,10 +109,11 @@ public class AndroidPermission {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
+
                             // 10 +ACCESS_BACKGROUND_LOCATION
 
                             // 11 +READ_PHONE_NUMBERS
-                            // 11 +MANAGE_EXTERNAL_STORAGE
+                            // 11 +MANAGE_EXTERNAL_STORAGE（比较特殊，直接前往设置页面开启权限，无法统一方式请求，因此各个api要过滤MANAGE_EXTERNAL_STORAGE失败结果）
                             // 11 -WRITE_EXTERNAL_STORAGE
 
                             // 13 +READ_MEDIA_IMAGES
@@ -125,7 +125,8 @@ public class AndroidPermission {
                             // 13 +POST_NOTIFICATIONS
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 //运行在Android13及以上时忽略13及以上新增的权限与13及以下废除的权限请求失败
-                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
                                         && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
@@ -133,7 +134,8 @@ public class AndroidPermission {
                                 }
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                                 //运行在Android11及以上时忽略13及以上新增的权限与11级以下废除的权限请求失败
-                                if (!Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
                                         && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
@@ -187,16 +189,14 @@ public class AndroidPermission {
     }
 
     /**
-     * @description 自定义Request时接收权限结果, 在activity的onActivityResult中调用
+     * description 自定义Request时接收权限结果, 在activity的onActivityResult中调用
      */
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (callback != null && source != null) {
             Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
             if (requestCode == PERMISSION_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
-                    if (callback != null) {
-                        callback.success(activity);
-                    }
+                    requestPermissions();
                 } else {
                     if (callback != null) {
                         callback.failure(activity);

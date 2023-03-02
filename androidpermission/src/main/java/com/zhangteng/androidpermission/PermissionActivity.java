@@ -90,7 +90,7 @@ public final class PermissionActivity extends Activity {
                             // 10 +ACCESS_BACKGROUND_LOCATION
 
                             // 11 +READ_PHONE_NUMBERS
-                            // 11 +MANAGE_EXTERNAL_STORAGE
+                            // 11 +MANAGE_EXTERNAL_STORAGE（比较特殊，直接前往设置页面开启权限，无法统一方式请求，因此各个api要过滤MANAGE_EXTERNAL_STORAGE失败结果）
                             // 11 -WRITE_EXTERNAL_STORAGE
 
                             // 13 +READ_MEDIA_IMAGES
@@ -102,7 +102,8 @@ public final class PermissionActivity extends Activity {
                             // 13 +POST_NOTIFICATIONS
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 //运行在Android13及以上时忽略13及以上新增的权限与13及以下废除的权限请求失败
-                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
                                         && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     mcallback.failure(this);
                                     mcallback = null;
@@ -111,7 +112,8 @@ public final class PermissionActivity extends Activity {
                                 }
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                                 //运行在Android11及以上时忽略13及以上新增的权限与11级以下废除的权限请求失败
-                                if (!Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
                                         && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
@@ -174,9 +176,7 @@ public final class PermissionActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == permissionsCode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
-                if (mcallback != null) {
-                    mcallback.success(this);
-                }
+                requestPermissions(permissions, permissionsCode);
             } else {
                 if (mcallback != null) {
                     mcallback.failure(this);

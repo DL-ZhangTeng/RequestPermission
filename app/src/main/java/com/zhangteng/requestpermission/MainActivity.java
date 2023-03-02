@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity implements Request {
     }
 
     public void onClick(View view) {
-        permissions = new String[]{  Permission.POST_NOTIFICATIONS};
+        permissions = new String[]{Permission.POST_NOTIFICATIONS};
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
 //                .request(this)
-                .permission(permissions)
+                .permission(Permission.Group.STORAGE_ALL)
                 .callback(new Callback() {
                     @Override
                     public void success(Activity permissionActivity) {
