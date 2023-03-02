@@ -15,6 +15,14 @@ public class Permission {
 
     public static final String ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
     public static final String ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION";
+    /**
+     * description: 为了让用户更好地控制应用对位置信息的访问权限，Android 10 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。
+     *              与现有的 ACCESS_FINE_LOCATION和 ACCESS_COARSE_LOCATION权限不同，新权限仅会影响应用在后台运行时对位置信息的访问权。除非应用的某个 Activity 可见或应用正在运行前台服务，否则应用将被视为在后台运行。
+     *              如果需要在后台时也获得用户位置(比如滴滴)，就需要动态申请ACCESS_BACKGROUND_LOCATION权限。
+     *              如果不需要的话，应用就无需任何改动，且谷歌会按照应用的targetSDK作出不同处理：
+     *              targetSDK <= 9 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Android 10设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。
+     */
+    public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION";
 
     public static final String RECORD_AUDIO = "android.permission.RECORD_AUDIO";
 
@@ -54,7 +62,22 @@ public class Permission {
     public static final String RECEIVE_WAP_PUSH = "android.permission.RECEIVE_WAP_PUSH";
     public static final String RECEIVE_MMS = "android.permission.RECEIVE_MMS";
 
+    /**
+     * description: 读取权限在Android13中被废弃
+     *              <uses-permission
+     *                  android:name="android.permission.READ_EXTERNAL_STORAGE"
+     *                      android:maxSdkVersion="32" />
+     */
     public static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
+    /**
+     * description: 从Android 13开始，以Android13（API 33）为目标平台的应用，系统新增运行时权限READ_MEDIA_IMAGES、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO 替代原有的READ_EXTERNAL_STORAGE权限。
+     *              如果用户之前向您的应用授予了 READ_EXTERNAL_STORAGE 权限，系统会自动向您的应用授予细化的媒体权限。
+     *              如果您同时请求 READ_MEDIA_IMAGES 权限和 READ_MEDIA_VIDEO 权限，系统只会显示一个系统权限对话框。
+     *              注意：如果您的应用只需要访问图片、照片和视频，请考虑使用照片选择器，而不是声明 READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限。
+     */
+    public static final String READ_MEDIA_IMAGES = "android.permission.READ_MEDIA_IMAGES";
+    public static final String READ_MEDIA_VIDEO = "android.permission.READ_MEDIA_VIDEO";
+    public static final String READ_MEDIA_AUDIO = "android.permission.READ_MEDIA_AUDIO";
     /**
      * description: 写入权限在Android11中被废弃，Android10中可以通过requestLegacyExternalStorage关闭沙盒存储
      *              <uses-permission
@@ -82,7 +105,8 @@ public class Permission {
 
         public static final String[] LOCATION = new String[]{
                 Permission.ACCESS_FINE_LOCATION,
-                Permission.ACCESS_COARSE_LOCATION};
+                Permission.ACCESS_COARSE_LOCATION,
+                Permission.ACCESS_BACKGROUND_LOCATION};
 
         public static final String[] MICROPHONE = new String[]{Permission.RECORD_AUDIO};
 
@@ -127,7 +151,7 @@ public class Permission {
 
         /**
          * description: android10及以下请求文件读写权限时WRITE_EXTERNAL_STORAGE生效，并且获取管理所有文件权限；
-         *              android11+请求存储权限时WRITE_EXTERNAL_STORAGE不生效，并且只获取访问媒体文件权限；
+         *              android11+请求存储权限时WRITE_EXTERNAL_STORAGE不生效，并且只获取访问媒体文件权限，如果需要要写入权限可以使用Android10+的分区存储或请求权限MANAGE_EXTERNAL_STORAGE
          */
         public static final String[] STORAGE = new String[]{
                 Permission.READ_EXTERNAL_STORAGE,
@@ -139,6 +163,17 @@ public class Permission {
          */
         public static final String[] STORAGE_R = new String[]{
                 Permission.MANAGE_EXTERNAL_STORAGE};
+
+        /**
+         * description: 从Android 13开始，以Android13（API 33）为目标平台的应用，系统新增运行时权限READ_MEDIA_IMAGES、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO 替代原有的READ_EXTERNAL_STORAGE权限。
+         *              如果用户之前向您的应用授予了 READ_EXTERNAL_STORAGE 权限，系统会自动向您的应用授予细化的媒体权限。
+         *              如果您同时请求 READ_MEDIA_IMAGES 权限和 READ_MEDIA_VIDEO 权限，系统只会显示一个系统权限对话框。
+         *              注意：如果您的应用只需要访问图片、照片和视频，请考虑使用照片选择器，而不是声明 READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限。
+         */
+        public static final String[] STORAGE_T = new String[]{
+                Permission.READ_MEDIA_IMAGES,
+                Permission.READ_MEDIA_VIDEO,
+                Permission.READ_MEDIA_AUDIO};
     }
 
 }

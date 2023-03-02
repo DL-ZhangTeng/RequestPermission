@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity implements Request {
     }
 
     public void onClick(View view) {
-        permissions = new String[]{Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA};
+        permissions = new String[]{Permission.READ_MEDIA_IMAGES,
+                Permission.READ_MEDIA_VIDEO,
+                Permission.READ_MEDIA_AUDIO,};
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
 //                .request(this)
