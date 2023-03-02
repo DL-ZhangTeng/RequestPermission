@@ -24,6 +24,15 @@ public class Permission {
      */
     public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION";
 
+    /**
+     * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
+     *              借助此权限，您可以更轻松地说明应用为何访问附近的 Wi-Fi 设备；
+     *              在以前的 Android 版本中，这类应用需要声明ACCESS_FINE_LOCATION权限。
+     *              如果您的应用以 Android 13 为目标平台并调用多个不同的 Wi-Fi API，则必须从用户处获得这项新权限。
+     *              如果您的应用尝试在未获得适当权限的情况下调用 Wi-Fi API，则会发生SecurityException。
+     */
+    public static final String NEARBY_WIFI_DEVICES = "android.permission.NEARBY_WIFI_DEVICES";
+
     public static final String RECORD_AUDIO = "android.permission.RECORD_AUDIO";
 
     public static final String READ_PHONE_STATE = "android.permission.READ_PHONE_STATE";
@@ -55,6 +64,12 @@ public class Permission {
     public static final String PROCESS_OUTGOING_CALLS = "android.permission.PROCESS_OUTGOING_CALLS";
 
     public static final String BODY_SENSORS = "android.permission.BODY_SENSORS";
+    /**
+     * description: Android 13 中引入了“在使用时”访问身体传感器（例如心率、体温和血氧饱和度）的概念。此访问模式与Android 10（API 级别 29）系统为位置信息引入的模式非常相似。
+     *              如果您的应用以 Android 13 为目标平台，并且在后台运行时需要访问身体传感器信息，那么除了现有的BODY_SENSORS权限外，您还必须声明新的BODY_SENSORS_BACKGROUND权限。
+     *              注意：这是受到“硬性限制”的权限，除非设备的安装程序针对您的应用将该权限列入了许可名单，否则您的应用将无法获得此权限。如需了解详情，请参阅有关受限权限的指南。
+     */
+    public static final String BODY_SENSORS_BACKGROUND = "android.permission.BODY_SENSORS_BACKGROUND";
 
     public static final String SEND_SMS = "android.permission.SEND_SMS";
     public static final String RECEIVE_SMS = "android.permission.RECEIVE_SMS";
@@ -91,6 +106,11 @@ public class Permission {
      */
     public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";
 
+    /**
+     * description:Android 13 中引入了新的运行时权限，用于从应用发送非豁免通知：POST_NOTIFICATIONS。要确认用户是否已启用通知，请调用NotificationManager.areNotificationsEnabled()
+     */
+    public static final String POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
+
     public static final class Group {
         public static final String[] CALENDAR = new String[]{
                 Permission.READ_CALENDAR,
@@ -107,6 +127,15 @@ public class Permission {
                 Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
                 Permission.ACCESS_BACKGROUND_LOCATION};
+
+        /**
+         * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
+         *              借助此权限，您可以更轻松地说明应用为何访问附近的 Wi-Fi 设备；
+         *              在以前的 Android 版本中，这类应用需要声明ACCESS_FINE_LOCATION权限。
+         *              如果您的应用以 Android 13 为目标平台并调用多个不同的 Wi-Fi API，则必须从用户处获得这项新权限。
+         *              如果您的应用尝试在未获得适当权限的情况下调用 Wi-Fi API，则会发生SecurityException。
+         */
+        public static final String[] NEARBY_DEVICES = new String[]{Permission.NEARBY_WIFI_DEVICES};
 
         public static final String[] MICROPHONE = new String[]{Permission.RECORD_AUDIO};
 
@@ -140,7 +169,9 @@ public class Permission {
                 Permission.USE_SIP,
                 Permission.PROCESS_OUTGOING_CALLS};
 
-        public static final String[] SENSORS = new String[]{Permission.BODY_SENSORS};
+        public static final String[] SENSORS = new String[]{
+                Permission.BODY_SENSORS,
+                Permission.BODY_SENSORS_BACKGROUND};
 
         public static final String[] SMS = new String[]{
                 Permission.SEND_SMS,
@@ -148,6 +179,9 @@ public class Permission {
                 Permission.READ_SMS,
                 Permission.RECEIVE_WAP_PUSH,
                 Permission.RECEIVE_MMS};
+
+        public static final String[] NOTIFICATIONS = new String[]{
+                Permission.POST_NOTIFICATIONS};
 
         /**
          * description: android10及以下请求文件读写权限时WRITE_EXTERNAL_STORAGE生效，并且获取管理所有文件权限；
@@ -174,6 +208,20 @@ public class Permission {
                 Permission.READ_MEDIA_IMAGES,
                 Permission.READ_MEDIA_VIDEO,
                 Permission.READ_MEDIA_AUDIO};
-    }
 
+        public static final String[] STORAGE_MEDIA = new String[]{
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.READ_MEDIA_IMAGES,
+                Permission.READ_MEDIA_VIDEO,
+                Permission.READ_MEDIA_AUDIO};
+
+        public static final String[] STORAGE_ALL = new String[]{
+                Permission.MANAGE_EXTERNAL_STORAGE,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.READ_MEDIA_IMAGES,
+                Permission.READ_MEDIA_VIDEO,
+                Permission.READ_MEDIA_AUDIO};
+    }
 }

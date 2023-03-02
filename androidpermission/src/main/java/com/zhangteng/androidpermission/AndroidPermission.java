@@ -110,26 +110,65 @@ public class AndroidPermission {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
+                            // 10 +ACCESS_BACKGROUND_LOCATION
+
+                            // 11 +READ_PHONE_NUMBERS
+                            // 11 +MANAGE_EXTERNAL_STORAGE
+                            // 11 -WRITE_EXTERNAL_STORAGE
+
+                            // 13 +READ_MEDIA_IMAGES
+                            // 13 +READ_MEDIA_VIDEO
+                            // 13 +READ_MEDIA_AUDIO
+                            // 13 -READ_EXTERNAL_STORAGE
+                            // 13 +NEARBY_WIFI_DEVICES
+                            // 13 +BODY_SENSORS_BACKGROUND
+                            // 13 +POST_NOTIFICATIONS
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                //Android13+不响应存储权限READ_EXTERNAL_STORAGE、WRITE_EXTERNAL_STORAGE请求失败结果
-                                if (!Permission.READ_EXTERNAL_STORAGE.equals(permissions[i]) && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                //运行在Android13及以上时忽略13及以上新增的权限与13及以下废除的权限请求失败
+                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
                                 }
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                //Android11+不响应存储权限WRITE_EXTERNAL_STORAGE请求失败结果
-                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                //运行在Android11及以上时忽略13及以上新增的权限与11级以下废除的权限请求失败
+                                if (!Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
+                                        && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
+                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                    callback.failure(activity);
+                                    callback = null;
+                                    return;
+                                }
+                            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                                //运行在Android10时忽略10以上新增权限请求失败
+                                if (!Permission.READ_PHONE_NUMBERS.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
+                                        && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
                                 }
                             } else {
-                                //Android11以下不响应存储权限MANAGE_EXTERNAL_STORAGE、READ_MEDIA_IMAGES、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO请求失败结果
-                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                //运行在Android10以下时忽略10及以上新增权限请求失败
+                                if (!Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.READ_PHONE_NUMBERS.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
                                         && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
-                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])) {
+                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
+                                        && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
