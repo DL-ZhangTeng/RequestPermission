@@ -14,7 +14,7 @@ allprojects {
     }
 }
 
-implementation 'com.github.DL-ZhangTeng:RequestPermission:1.2.1'
+implementation 'com.github.DL-ZhangTeng:RequestPermission:1.2.2'
 ```
 
 ## 使用默认透明背景PermissionActivity执行实际权限请求
@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements Request {
 
 | 版本     | 更新                     | 更新时间               |
 |--------|------------------------|--------------------|
+| v1.2.2 | Android12、13的新增权限兼容    | 2023/3/3 at 12:00  |
 | v1.2.1 | Android11的存储写入权限拒绝结果过滤 | 2023/2/14 at 0:07  |
 | v1.2.0 | 重新构建                   | 2022/1/26 at 12:42 |
 | v1.1.5 | 兼容Android11的存储权限       | 2021/6/11 at 15:29 |
