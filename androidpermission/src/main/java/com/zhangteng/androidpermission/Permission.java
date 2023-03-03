@@ -15,19 +15,6 @@ public class Permission {
 
     public static final String ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
     public static final String ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION";
-    /**
-     * description: 为了让用户更好地控制应用对位置信息的访问权限，Android 10 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。
-     *              与现有的 ACCESS_FINE_LOCATION和 ACCESS_COARSE_LOCATION权限不同，新权限仅会影响应用在后台运行时对位置信息的访问权。除非应用的某个 Activity 可见或应用正在运行前台服务，否则应用将被视为在后台运行。
-     *              如果需要在后台时也获得用户位置(比如滴滴)，就需要动态申请ACCESS_BACKGROUND_LOCATION权限。
-     *              如果不需要的话，应用就无需任何改动，且谷歌会按照应用的targetSDK作出不同处理：
-     *              targetSDK <= 9 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Android 10设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。
-     */
-    public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION";
-    /**
-     * description:如果您的应用以 Android 10（API 级别 29）或更高版本为目标平台，为了使您的应用从照片中检索未编辑的 Exif 元数据，您需要在应用的清单中声明 ACCESS_MEDIA_LOCATION 权限，然后在运行时请求此权限。
-     *             注意：由于您在运行时请求 ACCESS_MEDIA_LOCATION 权限，因此无法保证应用可以访问照片中未编辑的 Exif 元数据。应用需要用户明确同意才能访问此信息。
-     */
-    public static final String ACCESS_MEDIA_LOCATION = "android.permission.ACCESS_MEDIA_LOCATION";
 
     /**
      * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
@@ -141,9 +128,7 @@ public class Permission {
 
         public static final String[] LOCATION = new String[]{
                 Permission.ACCESS_FINE_LOCATION,
-                Permission.ACCESS_COARSE_LOCATION,
-                Permission.ACCESS_BACKGROUND_LOCATION,
-                Permission.ACCESS_MEDIA_LOCATION};
+                Permission.ACCESS_COARSE_LOCATION};
 
         /**
          * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。

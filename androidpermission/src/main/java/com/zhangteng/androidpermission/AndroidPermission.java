@@ -109,9 +109,6 @@ public class AndroidPermission {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
-                            // 10 +ACCESS_BACKGROUND_LOCATION(总是失败，暂时过滤，可能不是运行时权限)
-                            // 10 +ACCESS_MEDIA_LOCATION(总是失败，暂时过滤，可能不是运行时权限)
-
                             // 11 +READ_PHONE_NUMBERS
                             // 11 +MANAGE_EXTERNAL_STORAGE（比较特殊，直接前往设置页面开启权限，无法统一方式请求，因此各个api要过滤MANAGE_EXTERNAL_STORAGE失败结果）
                             // 11 -WRITE_EXTERNAL_STORAGE
@@ -131,9 +128,7 @@ public class AndroidPermission {
                                 //运行在Android13及以上时忽略13及以上新增的权限与13及以下废除的权限请求失败
                                 if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
                                         && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
@@ -147,9 +142,7 @@ public class AndroidPermission {
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
                                         && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
                                         && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
@@ -166,34 +159,13 @@ public class AndroidPermission {
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
                                         && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
                                         && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
-                                    callback.failure(activity);
-                                    callback = null;
-                                    return;
-                                }
-                            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-                                //运行在Android10时忽略10以上新增权限请求失败
-                                if (!Permission.READ_PHONE_NUMBERS.equals(permissions[i])
-                                        && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
-                                        && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
-                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
-                                        && !Permission.BLUETOOTH_SCAN.equals(permissions[i])
-                                        && !Permission.BLUETOOTH_ADVERTISE.equals(permissions[i])
-                                        && !Permission.BLUETOOTH_CONNECT.equals(permissions[i])
-                                        && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
-                                        && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
-                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
                                 }
                             } else {
-                                //运行在Android10以下时忽略10及以上新增权限请求失败
+                                //运行在Android10及以下时忽略10及以上新增权限请求失败
                                 if (!Permission.READ_PHONE_NUMBERS.equals(permissions[i])
                                         && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
@@ -204,9 +176,7 @@ public class AndroidPermission {
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
                                         && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
