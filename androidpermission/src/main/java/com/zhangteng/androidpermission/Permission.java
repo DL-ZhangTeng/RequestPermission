@@ -23,6 +23,11 @@ public class Permission {
      *              targetSDK <= 9 应用如果请求了ACCESS_FINE_LOCATION或 ACCESS_COARSE_LOCATION权限，Android 10设备会自动帮你申请ACCESS_BACKGROUND_LOCATION权限。
      */
     public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION";
+    /**
+     * description:如果您的应用以 Android 10（API 级别 29）或更高版本为目标平台，为了使您的应用从照片中检索未编辑的 Exif 元数据，您需要在应用的清单中声明 ACCESS_MEDIA_LOCATION 权限，然后在运行时请求此权限。
+     *             注意：由于您在运行时请求 ACCESS_MEDIA_LOCATION 权限，因此无法保证应用可以访问照片中未编辑的 Exif 元数据。应用需要用户明确同意才能访问此信息。
+     */
+    public static final String ACCESS_MEDIA_LOCATION = "android.permission.ACCESS_MEDIA_LOCATION";
 
     /**
      * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
@@ -32,6 +37,18 @@ public class Permission {
      *              如果您的应用尝试在未获得适当权限的情况下调用 Wi-Fi API，则会发生SecurityException。
      */
     public static final String NEARBY_WIFI_DEVICES = "android.permission.NEARBY_WIFI_DEVICES";
+    /**
+     * description: 如果您的应用以 Android 12（API 级别 31）或更高版本为目标平台，请在应用的清单文件中声明以下权限：
+     *              如果您的应用程序寻找蓝牙设备，例如 BLE 外围设备，请声明 BLUETOOTH_SCAN权限。
+     *              如果您的应用程序使当前设备可被其他蓝牙设备发现，请声明该 BLUETOOTH_ADVERTISE 权限。
+     *              如果您的应用程序与已配对的蓝牙设备通信，请声明 BLUETOOTH_CONNECT权限。
+     *              对于遗留的蓝牙相关权限声明，设置android:maxSdkVersion为30. 此应用兼容性步骤有助于系统仅向您的应用授予安装在运行 Android 12 或更高版本的设备上时所需的蓝牙权限。
+     *              如果您的应用使用蓝牙扫描结果来获取物理位置，请声明 ACCESS_FINE_LOCATION权限。否则，您可以强烈断言您的应用不会获取物理位置。
+     *              BLUETOOTH_ADVERTISE，BLUETOOTH_CONNECT 和 BLUETOOTH_SCAN权限是运行时权限。因此，您必须在您的应用程序中明确请求用户批准，然后才能查找蓝牙设备、使设备可被其他设备发现或与已配对的蓝牙设备通信。当您的应用请求至少其中一项权限时，系统会提示用户允许您的应用访问 附近的设备。
+     */
+    public static final String BLUETOOTH_SCAN = "android.permission.BLUETOOTH_SCAN";
+    public static final String BLUETOOTH_ADVERTISE = "android.permission.BLUETOOTH_ADVERTISE";
+    public static final String BLUETOOTH_CONNECT = "android.permission.BLUETOOTH_CONNECT";
 
     public static final String RECORD_AUDIO = "android.permission.RECORD_AUDIO";
 
@@ -125,7 +142,8 @@ public class Permission {
         public static final String[] LOCATION = new String[]{
                 Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
-                Permission.ACCESS_BACKGROUND_LOCATION};
+                Permission.ACCESS_BACKGROUND_LOCATION,
+                Permission.ACCESS_MEDIA_LOCATION};
 
         /**
          * description: Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，该权限属于NEARBY_DEVICES权限组，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
@@ -133,8 +151,19 @@ public class Permission {
          *              在以前的 Android 版本中，这类应用需要声明ACCESS_FINE_LOCATION权限。
          *              如果您的应用以 Android 13 为目标平台并调用多个不同的 Wi-Fi API，则必须从用户处获得这项新权限。
          *              如果您的应用尝试在未获得适当权限的情况下调用 Wi-Fi API，则会发生SecurityException。
+         *              <p>
+         *              Android 12（API 级别 31）引入了BLUETOOTH_SCAN、BLUETOOTH_ADVERTISE和BLUETOOTH_CONNECT运行时权限：
+         *              如果您的应用程序寻找蓝牙设备，例如 BLE 外围设备，请声明 BLUETOOTH_SCAN权限。
+         *              如果您的应用程序使当前设备可被其他蓝牙设备发现，请声明该 BLUETOOTH_ADVERTISE 权限。
+         *              如果您的应用程序与已配对的蓝牙设备通信，请声明 BLUETOOTH_CONNECT权限。
+         *              对于遗留的蓝牙相关权限声明，设置android:maxSdkVersion为30. 此应用兼容性步骤有助于系统仅向您的应用授予安装在运行 Android 12 或更高版本的设备上时所需的蓝牙权限。
+         *              如果您的应用使用蓝牙扫描结果来获取物理位置，请声明 ACCESS_FINE_LOCATION权限。否则，您可以强烈断言您的应用不会获取物理位置。
          */
-        public static final String[] NEARBY_DEVICES = new String[]{Permission.NEARBY_WIFI_DEVICES};
+        public static final String[] NEARBY_DEVICES = new String[]{
+                Permission.NEARBY_WIFI_DEVICES,
+                Permission.BLUETOOTH_SCAN,
+                Permission.BLUETOOTH_ADVERTISE,
+                Permission.BLUETOOTH_CONNECT};
 
         public static final String[] MICROPHONE = new String[]{Permission.RECORD_AUDIO};
 

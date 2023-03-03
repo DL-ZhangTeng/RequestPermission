@@ -99,7 +99,7 @@ public class AndroidPermission {
      * @param requestCode  请求code
      * @param permissions  权限
      * @param grantResults 权限结果
-     * description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
+     *                     description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
      */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (callback != null && source != null) {
@@ -109,12 +109,16 @@ public class AndroidPermission {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
-
-                            // 10 +ACCESS_BACKGROUND_LOCATION
+                            // 10 +ACCESS_BACKGROUND_LOCATION(总是失败，暂时过滤，可能不是运行时权限)
+                            // 10 +ACCESS_MEDIA_LOCATION(总是失败，暂时过滤，可能不是运行时权限)
 
                             // 11 +READ_PHONE_NUMBERS
                             // 11 +MANAGE_EXTERNAL_STORAGE（比较特殊，直接前往设置页面开启权限，无法统一方式请求，因此各个api要过滤MANAGE_EXTERNAL_STORAGE失败结果）
                             // 11 -WRITE_EXTERNAL_STORAGE
+
+                            // 12 +Permission.BLUETOOTH_SCAN
+                            // 12 +Permission.BLUETOOTH_ADVERTISE
+                            // 12 +Permission.BLUETOOTH_CONNECT
 
                             // 13 +READ_MEDIA_IMAGES
                             // 13 +READ_MEDIA_VIDEO
@@ -125,23 +129,46 @@ public class AndroidPermission {
                             // 13 +POST_NOTIFICATIONS
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 //运行在Android13及以上时忽略13及以上新增的权限与13及以下废除的权限请求失败
-                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.READ_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
                                 }
-                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                //运行在Android11及以上时忽略13及以上新增的权限与11级以下废除的权限请求失败
-                                if (!Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
-                                        && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                //运行在Android12及以上时忽略13及以上新增的权限与12级以下废除的权限请求失败
+                                if (!Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
                                         && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
                                         && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
-                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
+                                    callback.failure(activity);
+                                    callback = null;
+                                    return;
+                                }
+                            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.R) {
+                                //运行在Android11及以上时忽略12及以上新增的权限与11级以下废除的权限请求失败
+                                if (!Permission.READ_MEDIA_IMAGES.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
+                                        && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_SCAN.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_ADVERTISE.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_CONNECT.equals(permissions[i])
+                                        && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
+                                        && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
+                                        && !Permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
@@ -149,28 +176,37 @@ public class AndroidPermission {
                             } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
                                 //运行在Android10时忽略10以上新增权限请求失败
                                 if (!Permission.READ_PHONE_NUMBERS.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
                                         && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
                                         && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_SCAN.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_ADVERTISE.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_CONNECT.equals(permissions[i])
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
-                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])) {
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;
                                 }
                             } else {
                                 //运行在Android10以下时忽略10及以上新增权限请求失败
-                                if (!Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
-                                        && !Permission.READ_PHONE_NUMBERS.equals(permissions[i])
-                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                if (!Permission.READ_PHONE_NUMBERS.equals(permissions[i])
                                         && !Permission.READ_MEDIA_IMAGES.equals(permissions[i])
                                         && !Permission.READ_MEDIA_VIDEO.equals(permissions[i])
                                         && !Permission.READ_MEDIA_AUDIO.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_SCAN.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_ADVERTISE.equals(permissions[i])
+                                        && !Permission.BLUETOOTH_CONNECT.equals(permissions[i])
                                         && !Permission.NEARBY_WIFI_DEVICES.equals(permissions[i])
                                         && !Permission.BODY_SENSORS_BACKGROUND.equals(permissions[i])
-                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])) {
+                                        && !Permission.POST_NOTIFICATIONS.equals(permissions[i])
+                                        && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[i])
+                                        && !Permission.ACCESS_BACKGROUND_LOCATION.equals(permissions[i])
+                                        && !Permission.ACCESS_MEDIA_LOCATION.equals(permissions[i])) {
                                     callback.failure(activity);
                                     callback = null;
                                     return;

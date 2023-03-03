@@ -34,11 +34,14 @@ public class MainActivity extends AppCompatActivity implements Request {
     }
 
     public void onClick(View view) {
-        permissions = new String[]{Permission.POST_NOTIFICATIONS};
+        permissions = new String[]{Permission.NEARBY_WIFI_DEVICES,
+                Permission.BLUETOOTH_SCAN,
+                Permission.BLUETOOTH_ADVERTISE,
+                Permission.BLUETOOTH_CONNECT};
         androidPermission = new AndroidPermission.Buidler()
                 .with(this)
 //                .request(this)
-                .permission(Permission.Group.STORAGE_ALL)
+                .permission(permissions)
                 .callback(new Callback() {
                     @Override
                     public void success(Activity permissionActivity) {
