@@ -8,9 +8,9 @@ import android.content.Context;
  */
 public interface Callback {
 
-    void success(Activity permissionActivity);
+    void success(Activity activity);
 
-    void failure(Activity permissionActivity);
+    void failure(Activity activity);
 
-    void nonExecution(Activity permissionActivity);
+    void nonExecution(Activity activity);
 }

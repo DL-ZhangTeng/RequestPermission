@@ -18,6 +18,7 @@ import com.zhangteng.androidpermission.AndroidPermission;
 import com.zhangteng.androidpermission.Permission;
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.request.Request;
+import com.zhangteng.utils.SPUtilsKt;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,25 +45,30 @@ public class MainActivity extends AppCompatActivity implements Request {
                 .permission(permissions)
                 .callback(new Callback() {
                     @Override
-                    public void success(Activity permissionActivity) {
+                    public void success(Activity activity) {
                         Toast.makeText(MainActivity.this, "success", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void failure(Activity permissionActivity) {
+                    public void failure(Activity activity) {
                         Toast.makeText(MainActivity.this, "failure", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void nonExecution(Activity permissionActivity) {
+                    public void nonExecution(Activity activity) {
                         Toast.makeText(MainActivity.this, "nonExecution", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .build();
-        //用于初次请求权限
-        androidPermission.retryExecute();
-        //用于再次请求权限
-        //androidPermission.retryExecute();
+        Boolean isRequestPermissions = (Boolean) SPUtilsKt.getFromSP(this, "isRequestPermissions", false, "currentUser");
+        if (Boolean.TRUE.equals(isRequestPermissions)) {
+            //用于再次请求权限
+            androidPermission.retryExecute();
+        } else {
+            //用于初次请求权限
+            androidPermission.execute();
+            SPUtilsKt.putToSP(this, "isRequestPermissions", true, "currentUser");
+        }
     }
 
     @Override

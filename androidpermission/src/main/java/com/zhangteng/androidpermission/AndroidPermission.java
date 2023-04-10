@@ -70,7 +70,7 @@ public class AndroidPermission {
     }
 
     /**
-     * description 重新开始申请权限（用于再次请求权限）
+     * description 重新开始申请权限（用于再次请求权限，如果shouldShowRequestPermissionRationale=true执行请求权限，否则跳转设置页面）
      */
     public void retryExecute() {
         if (!checkPermission()) {
