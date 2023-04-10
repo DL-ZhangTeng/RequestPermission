@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         permissions = new String[]{Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA};
-        androidPermission = new AndroidPermission.Buidler()
+        androidPermission = new AndroidPermission.Builder()
                 .with(this)
                 .permission(permissions)
                 .callback(new Callback() {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements Request {
 
     public void onClick(View view) {
         permissions = new String[]{Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA};
-        androidPermission = new AndroidPermission.Buidler()
+        androidPermission = new AndroidPermission.Builder()
                 .with(this)
 //                .request(this)
                 .permission(permissions)

@@ -42,17 +42,17 @@ public class AndroidPermission {
     private SettingService settingService;
     private Callback callback;
 
-    public AndroidPermission(Buidler buidler) {
-        setBuidler(buidler);
+    public AndroidPermission(Builder builder) {
+        setBuilder(builder);
     }
 
-    private void setBuidler(Buidler buidler) {
-        this.source = buidler.source;
-        this.checker = buidler.checker;
-        this.rationale = buidler.rationale;
-        this.request = buidler.request;
-        this.callback = buidler.callback;
-        this.settingService = buidler.settingService;
+    private void setBuilder(Builder builder) {
+        this.source = builder.source;
+        this.checker = builder.checker;
+        this.rationale = builder.rationale;
+        this.request = builder.request;
+        this.callback = builder.callback;
+        this.settingService = builder.settingService;
     }
 
     public void execute() {
@@ -212,7 +212,7 @@ public class AndroidPermission {
         }
     }
 
-    public static class Buidler implements Serializable {
+    public static class Builder implements Serializable {
         private Source source;
         private Request request;
         private Rationale rationale;
@@ -220,27 +220,27 @@ public class AndroidPermission {
         private Callback callback;
         private SettingService settingService;
 
-        public Buidler with(Activity activity) {
+        public Builder with(Activity activity) {
             this.source = new ActivitySource(activity);
             return this;
         }
 
-        public Buidler with(AppCompatActivity activity) {
+        public Builder with(AppCompatActivity activity) {
             this.source = new AppCompatActivitySource(activity);
             return this;
         }
 
-        public Buidler with(FragmentActivity activity) {
+        public Builder with(FragmentActivity activity) {
             this.source = new FragmentActivitySource(activity);
             return this;
         }
 
-        public Buidler with(Fragment fragment) {
+        public Builder with(Fragment fragment) {
             this.source = new FragmentSource(fragment);
             return this;
         }
 
-        public Buidler with(androidx.fragment.app.Fragment fragment) {
+        public Builder with(androidx.fragment.app.Fragment fragment) {
             this.source = new SupportFragmentSource(fragment);
             if (fragment instanceof Request) {
                 request = (Request) fragment;
@@ -248,37 +248,37 @@ public class AndroidPermission {
             return this;
         }
 
-        public Buidler source(Source source) {
+        public Builder source(Source source) {
             this.source = source;
             return this;
         }
 
-        public Buidler checker(Checker checker) {
+        public Builder checker(Checker checker) {
             this.checker = checker;
             return this;
         }
 
-        public Buidler request(Request request) {
+        public Builder request(Request request) {
             this.request = request;
             return this;
         }
 
-        public Buidler rationable(Rationale rationale) {
+        public Builder rationable(Rationale rationale) {
             this.rationale = rationale;
             return this;
         }
 
-        public Buidler callback(Callback callback) {
+        public Builder callback(Callback callback) {
             this.callback = callback;
             return this;
         }
 
-        public Buidler settingService(SettingService settingService) {
+        public Builder settingService(SettingService settingService) {
             this.settingService = settingService;
             return this;
         }
 
-        public Buidler permission(String... permissions) {
+        public Builder permission(String... permissions) {
             if (this.checker == null) {
                 this.checker = new StandardChecker(permissions);
             }

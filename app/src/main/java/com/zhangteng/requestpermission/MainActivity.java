@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements Request {
                 Permission.BLUETOOTH_SCAN,
                 Permission.BLUETOOTH_ADVERTISE,
                 Permission.BLUETOOTH_CONNECT};
-        androidPermission = new AndroidPermission.Buidler()
+        androidPermission = new AndroidPermission.Builder()
                 .with(this)
 //                .request(this)
                 .permission(permissions)
