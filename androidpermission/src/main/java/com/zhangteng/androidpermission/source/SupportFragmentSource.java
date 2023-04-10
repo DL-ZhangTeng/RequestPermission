@@ -52,13 +52,7 @@ public class SupportFragmentSource implements Source {
         request.requestPermissions(getContext(), permissionCode, callback);
     }
 
-    @Override
-    public void toSetting(SettingService settingService) {
-        settingService.execute();
-    }
-
-    @Override
-    public void toSetting(SettingService settingService, int requestcode) {
-        settingService.execute(requestcode);
+    public void toSetting(SettingService settingService, int requestCode, Callback callback) {
+        settingService.execute(getContext(), requestCode, callback);
     }
 }

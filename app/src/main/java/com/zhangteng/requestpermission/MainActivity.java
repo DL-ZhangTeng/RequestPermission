@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements Request {
                 })
                 .build();
         //用于初次请求权限
-        androidPermission.execute();
+        androidPermission.retryExecute();
         //用于再次请求权限
-//        androidPermission.execute(100);
+        //androidPermission.retryExecute();
     }
 
     @Override
@@ -95,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements Request {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && androidPermission.checkPermission()) {
-            Toast.makeText(MainActivity.this, "从设置页返回", Toast.LENGTH_SHORT).show();
-        }
         //自定义request时执行结果
         androidPermission.onActivityResult(requestCode, resultCode, data);
     }

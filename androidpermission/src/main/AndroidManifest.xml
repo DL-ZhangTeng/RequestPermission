@@ -6,5 +6,9 @@
             android:name=".PermissionActivity"
             android:exported="false"
             android:theme="@style/PermissionActivityTheme" />
+        <activity
+            android:name=".SettingActivity"
+            android:exported="false"
+            android:theme="@style/PermissionActivityTheme" />
     </application>
 </manifest>

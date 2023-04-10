@@ -15,20 +15,14 @@
  */
 package com.zhangteng.androidpermission.setting;
 
-public interface SettingService {
+import android.content.Context;
 
-    /**
-     * Execute setting.
-     */
-    void execute();
+import com.zhangteng.androidpermission.callback.Callback;
+
+public interface SettingService {
 
     /**
      * Execute setting with requestCode.
      */
-    void execute(int requestCode);
-
-    /**
-     * Cancel the operation.
-     */
-    void cancel();
+    void execute(Context context, int requestCode, Callback callback);
 }

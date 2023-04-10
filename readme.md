@@ -56,15 +56,7 @@ public class MainActivity extends AppCompatActivity {
         //用于初次请求权限
         androidPermission.execute();
         //用于再次请求权限
-//        androidPermission.execute(100);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && androidPermission.checkPermission()) {
-            Toast.makeText(MainActivity.this, "从设置页返回", Toast.LENGTH_SHORT).show();
-        }
+        //androidPermission.retryExecute();
     }
 }
 
@@ -88,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements Request {
         permissions = new String[]{Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA};
         androidPermission = new AndroidPermission.Builder()
                 .with(this)
-//                .request(this)
+                .request(this)
                 .permission(permissions)
                 .callback(new Callback() {
                     @Override
@@ -110,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements Request {
         //用于初次请求权限
         androidPermission.execute();
         //用于再次请求权限
-//        androidPermission.execute(100);
+        //androidPermission.retryExecute();
     }
 
     @Override
@@ -143,9 +135,6 @@ public class MainActivity extends AppCompatActivity implements Request {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && androidPermission.checkPermission()) {
-            Toast.makeText(MainActivity.this, "从设置页返回", Toast.LENGTH_SHORT).show();
-        }
         //自定义request时执行结果
         androidPermission.onActivityResult(requestCode, resultCode, data);
     }

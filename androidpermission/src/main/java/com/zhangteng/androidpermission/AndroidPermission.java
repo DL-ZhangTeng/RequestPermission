@@ -35,6 +35,7 @@ import java.io.Serializable;
  */
 public class AndroidPermission {
     private static final int PERMISSION_CODE = 1 << 15;
+    private static final int SETTING_CODE = 2 << 15;
     private Source source;
     private Request request;
     private Rationale rationale;
@@ -55,6 +56,9 @@ public class AndroidPermission {
         this.settingService = builder.settingService;
     }
 
+    /**
+     * description 开始申请权限
+     */
     public void execute() {
         if (!checkPermission()) {
             requestPermissions();
@@ -65,12 +69,15 @@ public class AndroidPermission {
         }
     }
 
-    public void execute(int settingRequestCode) {
+    /**
+     * description 重新开始申请权限（用于再次请求权限）
+     */
+    public void retryExecute() {
         if (!checkPermission()) {
             if (shouldShowRequestPermissionRationale()) {
                 requestPermissions();
             } else {
-                toSetting(settingRequestCode);
+                toSetting();
             }
         } else {
             if (callback != null) {
@@ -78,28 +85,48 @@ public class AndroidPermission {
             }
         }
     }
-
+    /**
+     * description 检测是否有权限
+     *
+     * @return 是否有相关权限
+     */
     public boolean checkPermission() {
         return source.checkSelfPermission(checker);
     }
 
+    /**
+     * description  是否显示权限请求弹窗
+     *              第一次请求权限时ActivityCompat.shouldShowRequestPermissionRationale=false;
+     *              第一次请求权限被禁止，但未选择【不再提醒】ActivityCompat.shouldShowRequestPermissionRationale=true;
+     *              允许某权限后ActivityCompat.shouldShowRequestPermissionRationale=false;
+     *              禁止权限，并选中【禁止后不再询问】ActivityCompat.shouldShowRequestPermissionRationale=false；
+     *
+     * @return 是否显示权限请求弹窗
+     */
     public boolean shouldShowRequestPermissionRationale() {
         return source.shouldShowRequestPermissionRationale(rationale);
     }
 
+    /**
+     * description 申请权限
+     */
     public void requestPermissions() {
         source.requestPermissions(request, PERMISSION_CODE, callback);
     }
 
-    public void toSetting(int settingRequestCode) {
-        source.toSetting(settingService, settingRequestCode);
+    /**
+     * description 前往app设置页面
+     */
+    public void toSetting() {
+        source.toSetting(settingService, SETTING_CODE, callback);
     }
 
     /**
+     * description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
+     *
      * @param requestCode  请求code
      * @param permissions  权限
      * @param grantResults 权限结果
-     *                     description 自定义Request时接收权限结果，在activity的onRequestPermissionsResult中调用
      */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (callback != null && source != null) {
@@ -263,7 +290,7 @@ public class AndroidPermission {
             return this;
         }
 
-        public Builder rationable(Rationale rationale) {
+        public Builder rationale(Rationale rationale) {
             this.rationale = rationale;
             return this;
         }
@@ -288,13 +315,13 @@ public class AndroidPermission {
             if (this.request == null) {
                 this.request = new RequestFactory().createRequest(permissions);
             }
+            if (this.settingService == null) {
+                this.settingService = new PermissionSetting(permissions);
+            }
             return this;
         }
 
         public AndroidPermission build() {
-            if (this.settingService == null) {
-                this.settingService = new PermissionSetting(source);
-            }
             return new AndroidPermission(this);
         }
     }

@@ -173,8 +173,8 @@ public final class PermissionActivity extends Activity {
             } else {
                 mcallback.nonExecution(this);
             }
-            mcallback = null;
         }
+        mcallback = null;
         finish();
     }
 
@@ -190,6 +190,7 @@ public final class PermissionActivity extends Activity {
                 }
             }
         }
+        mcallback = null;
         finish();
     }
 

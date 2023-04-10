@@ -26,7 +26,5 @@ public interface Source {
 
     void requestPermissions(Request request, int permissionCode, Callback callback);
 
-    void toSetting(SettingService settingService);
-
-    void toSetting(SettingService settingService, int requestcode);
+    void toSetting(SettingService settingService, int requestCode, Callback callback);
 }
