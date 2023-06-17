@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements Request {
         if (Build.VERSION.SDK_INT >= 30) {
             List<String> permissionsList = Arrays.asList(permissions);
             if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
-                //如果Android11存储权限与其它Android6权限同时请求时，只请求MANAGE_EXTERNAL_STORAGE权限，其它权限需要重新execute
+                //如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
                 if (Environment.isExternalStorageManager()) {
                     requestPermissions(permissions, permissionCode);
                 } else {

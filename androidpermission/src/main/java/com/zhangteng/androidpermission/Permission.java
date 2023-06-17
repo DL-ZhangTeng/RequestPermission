@@ -159,7 +159,7 @@ public class Permission {
     public static final String UWB_RANGING = "android.permission.UWB_RANGING";
 
     /**
-     * 如果Android11存储权限与其它Android6权限同时请求时，只请求MANAGE_EXTERNAL_STORAGE权限，其它权限需要重新execute
+     * 如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
      */
     @RequiresApi(30)
     public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";

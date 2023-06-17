@@ -138,7 +138,7 @@ public class AndroidPermission {
                     for (int i = 0; i < grantResults.length; i++) {
                         int grantResult = grantResults[i];
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
-                            if (VerifyUtils.isProcess(permissions[i])) {
+                            if (VerifyUtils.isProcessResult(permissions[i])) {
                                 callback.failure(activity);
                                 callback = null;
                                 return;
