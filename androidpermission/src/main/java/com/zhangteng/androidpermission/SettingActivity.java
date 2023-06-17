@@ -51,7 +51,7 @@ public final class SettingActivity extends Activity {
         permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
         settingCode = intent.getIntExtra(KEY_SETTINGCODE, 1);
         if (permissions != null && mcallback != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= 30) {
                 List<String> permissionsList = Arrays.asList(permissions);
                 if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
                     if (Environment.isExternalStorageManager()) {
@@ -76,7 +76,7 @@ public final class SettingActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == settingCode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (requestCode == settingCode && Build.VERSION.SDK_INT >= 30) {
             if (new StandardChecker(permissions).hasPermission(this)) {
                 if (mcallback != null) {
                     mcallback.success(this);

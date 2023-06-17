@@ -27,7 +27,7 @@ public class StandardChecker implements Checker {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             for (String permission : permissions) {
                 //如果是Android11并且请求读写权限时检查权限
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (android.os.Build.VERSION.SDK_INT >= 30) {
                     if (permission.equals(Permission.MANAGE_EXTERNAL_STORAGE)) {
                         if (!Environment.isExternalStorageManager()) {
                             return false;
