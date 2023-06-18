@@ -22,9 +22,6 @@ import androidx.annotation.RequiresApi;
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.utils.VerifyUtils;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by swing on 2018/5/10.
  */
@@ -58,21 +55,12 @@ public final class PermissionActivity extends Activity {
         permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
         permissionsCode = intent.getIntExtra(KEY_PERMISSIONCODE, 1);
         if (permissions != null && mcallback != null) {
-            if (Build.VERSION.SDK_INT >= 30) {
-                List<String> permissionsList = Arrays.asList(permissions);
-                if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
-                    if (Environment.isExternalStorageManager()) {
-                        requestPermissions(permissions, permissionsCode);
-                    } else {
-                        Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                        intent1.setData(Uri.parse("package:" + PermissionActivity.this.getPackageName()));
-                        startActivityForResult(intent1, permissionsCode);
-                    }
-                } else {
-                    requestPermissions(permissions, permissionsCode);
-                }
-            } else {
+            if (VerifyUtils.hasManageExternalStorage(permissions)) {
                 requestPermissions(permissions, permissionsCode);
+            } else {
+                Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent1.setData(Uri.parse("package:" + PermissionActivity.this.getPackageName()));
+                startActivityForResult(intent1, permissionsCode);
             }
         } else {
             mcallback = null;

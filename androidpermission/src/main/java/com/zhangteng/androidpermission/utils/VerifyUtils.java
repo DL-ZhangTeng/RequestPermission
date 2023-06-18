@@ -1,8 +1,11 @@
 package com.zhangteng.androidpermission.utils;
 
 import android.os.Build;
+import android.os.Environment;
 
 import com.zhangteng.androidpermission.Permission;
+
+import java.util.Arrays;
 
 /**
  * description: 权限版本校验工具
@@ -101,9 +104,38 @@ public class VerifyUtils {
      * @return true 需要 false 不需要
      */
     public static boolean isProcessResult(String permission) {
-        if (Permission.MANAGE_EXTERNAL_STORAGE.equals(permission)) {
+        if (isManageExternalStorage(permission)) {
             return false;
         }
         return isProcess(permission);
+    }
+
+    /**
+     * description 是否有存储管理权限MANAGE_EXTERNAL_STORAGE，小于api 30或permissions不包含MANAGE_EXTERNAL_STORAGE时返回true
+     *
+     * @param permissions 权限列表
+     * @return true 有权限 false 无权限
+     */
+    public static boolean hasManageExternalStorage(String... permissions) {
+        if (Build.VERSION.SDK_INT >= 30) {
+            if (isManageExternalStorage(permissions)) {
+                return Environment.isExternalStorageManager();
+            }
+        }
+        return true;
+    }
+
+    /**
+     * description 是否 包含存储管理权限MANAGE_EXTERNAL_STORAGE
+     *
+     * @param permissions 权限列表
+     * @return true 是 false 否
+     */
+    public static boolean isManageExternalStorage(String... permissions) {
+        if (permissions.length == 1) {
+            return Permission.MANAGE_EXTERNAL_STORAGE.equals(permissions[0]);
+        } else {
+            return Arrays.asList(permissions).contains(Permission.MANAGE_EXTERNAL_STORAGE);
+        }
     }
 }

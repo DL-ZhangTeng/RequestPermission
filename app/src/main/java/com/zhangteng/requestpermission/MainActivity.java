@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
@@ -18,10 +17,8 @@ import com.zhangteng.androidpermission.AndroidPermission;
 import com.zhangteng.androidpermission.Permission;
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.request.Request;
+import com.zhangteng.androidpermission.utils.VerifyUtils;
 import com.zhangteng.utils.SPUtilsKt;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Request {
 
@@ -73,19 +70,14 @@ public class MainActivity extends AppCompatActivity implements Request {
 
     @Override
     public void requestPermissions(Context context, int permissionCode, Callback callback) {
+        //如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
         if (Build.VERSION.SDK_INT >= 30) {
-            List<String> permissionsList = Arrays.asList(permissions);
-            if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
-                //如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
-                if (Environment.isExternalStorageManager()) {
-                    requestPermissions(permissions, permissionCode);
-                } else {
-                    Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    intent1.setData(Uri.parse("package:" + getPackageName()));
-                    startActivityForResult(intent1, permissionCode);
-                }
-            } else {
+            if (VerifyUtils.hasManageExternalStorage(permissions)) {
                 requestPermissions(permissions, permissionCode);
+            } else {
+                Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent1.setData(Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent1, permissionCode);
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, permissionCode);

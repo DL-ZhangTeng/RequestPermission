@@ -19,9 +19,7 @@ import androidx.annotation.Nullable;
 
 import com.zhangteng.androidpermission.callback.Callback;
 import com.zhangteng.androidpermission.checker.StandardChecker;
-
-import java.util.Arrays;
-import java.util.List;
+import com.zhangteng.androidpermission.utils.VerifyUtils;
 
 /**
  * Created by swing on 2018/5/10.
@@ -51,21 +49,12 @@ public final class SettingActivity extends Activity {
         permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
         settingCode = intent.getIntExtra(KEY_SETTINGCODE, 1);
         if (permissions != null && mcallback != null) {
-            if (Build.VERSION.SDK_INT >= 30) {
-                List<String> permissionsList = Arrays.asList(permissions);
-                if (permissionsList.contains(Permission.MANAGE_EXTERNAL_STORAGE)) {
-                    if (Environment.isExternalStorageManager()) {
-                        toSettingPage();
-                    } else {
-                        Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                        intent1.setData(Uri.parse("package:" + SettingActivity.this.getPackageName()));
-                        startActivityForResult(intent1, settingCode);
-                    }
-                } else {
-                    toSettingPage();
-                }
-            } else {
+            if (VerifyUtils.hasManageExternalStorage(permissions)) {
                 toSettingPage();
+            } else {
+                Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent1.setData(Uri.parse("package:" + SettingActivity.this.getPackageName()));
+                startActivityForResult(intent1, settingCode);
             }
         } else {
             mcallback = null;
