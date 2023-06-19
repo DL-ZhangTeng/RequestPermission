@@ -32,10 +32,7 @@ public class MainActivity extends AppCompatActivity implements Request {
     }
 
     public void onClick(View view) {
-        permissions = new String[]{Permission.NEARBY_WIFI_DEVICES,
-                Permission.BLUETOOTH_SCAN,
-                Permission.BLUETOOTH_ADVERTISE,
-                Permission.BLUETOOTH_CONNECT};
+        permissions = new String[]{Permission.READ_MEDIA_IMAGES, Permission.READ_MEDIA_VIDEO};
         androidPermission = new AndroidPermission.Builder()
                 .with(this)
 //                .request(this)

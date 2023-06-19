@@ -1,5 +1,6 @@
 package com.zhangteng.androidpermission.utils;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
@@ -20,11 +21,12 @@ public class VerifyUtils {
      * 1、不需要处理的权限结果重置为PackageManager.PERMISSION_GRANTED；
      * 2、Android14（api34）READ_MEDIA_VISUAL_USER_SELECTED授权后认为READ_MEDIA_IMAGES、READ_MEDIA_VIDEO被授权
      *
+     * @param context      上下文
      * @param permissions  权限列表
      * @param grantResults 授权结果
      * @return 处理后的授权结果
      */
-    public static int[] grantResults(String[] permissions, int[] grantResults) {
+    public static int[] grantResults(Context context, String[] permissions, int[] grantResults) {
         //如果授权结果与权限列表长度不一致直接返回grantResults
         if (grantResults.length != permissions.length) {
             return grantResults;
@@ -39,20 +41,30 @@ public class VerifyUtils {
             }
         }
 
-        //Android14 api34以下3个权限同时请求时READ_MEDIA_VISUAL_USER_SELECTED授权后认为READ_MEDIA_IMAGES、READ_MEDIA_VIDEO被授权
-        //Permission.READ_MEDIA_IMAGES
-        //Permission.READ_MEDIA_VIDEO
-        //Permission.READ_MEDIA_VISUAL_USER_SELECTED
+        //1、从Android 14开始，如果您manifest声明了 READ_MEDIA_VISUAL_USER_SELECTED 权限，并且用户在系统权限对话框中选择了选择照片和视频，则会发生以下行为：
+        //READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限都会被拒绝。
+        //会授予 READ_MEDIA_VISUAL_USER_SELECTED 权限，可提供对用户照片和视频的部分和临时访问权限。
+        //如果您的应用需要访问其他照片和视频，您必须再次手动请求 READ_MEDIA_IMAGES 权限和/或 READ_MEDIA_VIDEO 权限。
+        //2、从Android 14开始，如果您manifest未声明 READ_MEDIA_VISUAL_USER_SELECTED 权限，则会发生以下行为：
+        //在应用会话期间会授予 READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限，从而提供对用户选择的照片和视频的临时授权和临时访问权限。当您的应用转到后台或当用户主动终止您的应用时，系统最终会拒绝这些权限。此行为就像其他单次授权一样。
+        //如果您的应用稍后需要访问其他照片和视频，您必须再次手动请求 READ_MEDIA_IMAGES 权限或 READ_MEDIA_VIDEO 权限。系统遵循与初始权限请求相同的流程，提示用户选择照片和视频。
+
+        //以下处理第一条manifest声明了 READ_MEDIA_VISUAL_USER_SELECTED 权限，并且用户在系统权限对话框中选择了选择照片和视频场景
+        //Android14(api34) READ_MEDIA_VISUAL_USER_SELECTED授权后认为READ_MEDIA_IMAGES、READ_MEDIA_VIDEO被授权
         List<String> permissionList = Arrays.asList(permissions);
 
-        int readMediaVisualUserSelectedGrantResults = PackageManager.PERMISSION_DENIED;
+        int readMediaVisualUserSelectedGrantResults;
+
         int readMediaVisualUserSelectedIndex = permissionList.indexOf(Permission.READ_MEDIA_VISUAL_USER_SELECTED);
         if (readMediaVisualUserSelectedIndex >= 0) {
+            //如果请求了READ_MEDIA_VISUAL_USER_SELECTED权限，直接获取请求结果
             readMediaVisualUserSelectedGrantResults = grantResults[readMediaVisualUserSelectedIndex];
+        } else {
+            //如果未请求READ_MEDIA_VISUAL_USER_SELECTED权限，检测权限授予情况
+            readMediaVisualUserSelectedGrantResults = context.checkPermission(Permission.READ_MEDIA_VISUAL_USER_SELECTED, android.os.Process.myPid(), android.os.Process.myUid());
         }
 
         if (readMediaVisualUserSelectedGrantResults == PackageManager.PERMISSION_GRANTED) {
-
             int readMediaImageIndex = permissionList.indexOf(Permission.READ_MEDIA_IMAGES);
             int readMediaVideoIndex = permissionList.indexOf(Permission.READ_MEDIA_VIDEO);
             if (readMediaImageIndex >= 0) {

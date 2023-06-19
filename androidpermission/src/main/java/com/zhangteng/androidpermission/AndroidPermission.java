@@ -135,7 +135,7 @@ public class AndroidPermission {
             Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
             if (requestCode == PERMISSION_CODE) {
                 if (grantResults.length > 0) {
-                    int[] processedGrantResults = VerifyUtils.grantResults(permissions, grantResults);
+                    int[] processedGrantResults = VerifyUtils.grantResults(source.getContext(), permissions, grantResults);
                     for (int grantResult : processedGrantResults) {
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
                             callback.failure(activity);

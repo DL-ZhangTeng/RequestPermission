@@ -1,12 +1,12 @@
 package com.zhangteng.androidpermission;
 
-import androidx.annotation.RequiresApi;
-
 /**
  * Created by swing on 2018/5/10.
  */
 public class Permission {
-    @RequiresApi(29)
+    /**
+     * Android 10 (API level 29) 添加
+     */
     public static final String ACTIVITY_RECOGNITION = "android.permission.ACTIVITY_RECOGNITION";
     public static final String READ_CALENDAR = "android.permission.READ_CALENDAR";
     public static final String WRITE_CALENDAR = "android.permission.WRITE_CALENDAR";
@@ -30,7 +30,9 @@ public class Permission {
     public static final String WRITE_CONTACTS = "android.permission.WRITE_CONTACTS";
     public static final String GET_ACCOUNTS = "android.permission.GET_ACCOUNTS";
 
-    @RequiresApi(29)
+    /**
+     * Android 10 (API level 29) 添加
+     */
     public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
     public static final String ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
     public static final String ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION";
@@ -38,6 +40,7 @@ public class Permission {
     public static final String RECORD_AUDIO = "android.permission.RECORD_AUDIO";
 
     /**
+     * Android 12（API 级别 31） 添加
      * 如果您的应用以 Android 12（API 级别 31）或更高版本为目标平台，请在应用的清单文件中声明以下权限：
      * 如果您的应用程序寻找蓝牙设备，例如 BLE 外围设备，请声明 BLUETOOTH_SCAN权限。
      * 如果您的应用程序使当前设备可被其他蓝牙设备发现，请声明该 BLUETOOTH_ADVERTISE 权限。
@@ -46,21 +49,25 @@ public class Permission {
      * 如果您的应用使用蓝牙扫描结果来获取物理位置，请声明 ACCESS_FINE_LOCATION权限。否则，您可以强烈断言您的应用不会获取物理位置。
      * BLUETOOTH_ADVERTISE，BLUETOOTH_CONNECT 和 BLUETOOTH_SCAN权限是运行时权限。因此，您必须在您的应用程序中明确请求用户批准，然后才能查找蓝牙设备、使设备可被其他设备发现或与已配对的蓝牙设备通信。当您的应用请求至少其中一项权限时，系统会提示用户允许您的应用访问 附近的设备。
      */
-    @RequiresApi(31)
     public static final String BLUETOOTH_SCAN = "android.permission.BLUETOOTH_SCAN";
-    @RequiresApi(31)
+    /**
+     * Android 12（API 级别 31） 添加
+     */
     public static final String BLUETOOTH_ADVERTISE = "android.permission.BLUETOOTH_ADVERTISE";
-    @RequiresApi(31)
+    /**
+     * Android 12（API 级别 31） 添加
+     */
     public static final String BLUETOOTH_CONNECT = "android.permission.BLUETOOTH_CONNECT";
 
     /**
-     * description:Android 13 中引入了新的运行时权限，用于从应用发送非豁免通知：POST_NOTIFICATIONS。要确认用户是否已启用通知，请调用NotificationManager.areNotificationsEnabled()
+     * Android 13（API 级别 33） 添加
+     * 用于从应用发送非豁免通知：POST_NOTIFICATIONS。要确认用户是否已启用通知，请调用NotificationManager.areNotificationsEnabled()
      */
-    @RequiresApi(33)
     public static final String POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
 
     public static final String READ_PHONE_STATE = "android.permission.READ_PHONE_STATE";
     /**
+     * Android 8（API 级别 26） 添加
      * 如果您的应用以 Android 11 或更高版本为目标平台，并且需要访问以下列表中显示的电话号码 API，则必须请求 READ_PHONE_NUMBERS 权限，而不是 READ_PHONE_STATE 权限。
      * <p>
      * TelephonyManager 类和 TelecomManager 类中的 getLine1Number() 方法。
@@ -78,22 +85,25 @@ public class Permission {
      * <uses-permission android:name="READ_PHONE_NUMBERS" />
      * </manifest>
      */
-    @RequiresApi(26)
     public static final String READ_PHONE_NUMBERS = "android.permission.READ_PHONE_NUMBERS";
-    @RequiresApi(26)
+    /**
+     * Android 8（API 级别 26） 添加
+     */
     public static final String ANSWER_PHONE_CALLS = "android.permission.ANSWER_PHONE_CALLS";
     public static final String CALL_PHONE = "android.permission.CALL_PHONE";
-    @RequiresApi(28)
+    /**
+     * Android 9（API 级别 28） 添加
+     */
     public static final String ACCEPT_HANDOVER = "android.permission.ACCEPT_HANDOVER";
     public static final String ADD_VOICEMAIL = "com.android.voicemail.permission.ADD_VOICEMAIL";
     public static final String USE_SIP = "android.permission.USE_SIP";
 
     public static final String BODY_SENSORS = "android.permission.BODY_SENSORS";
     /**
+     * Android 13（API 级别 33） 添加
      * Android 13 中引入了“在使用时”访问身体传感器（例如心率、体温和血氧饱和度）的概念。此访问模式与Android 10（API 级别 29）系统为位置信息引入的模式非常相似。
      * 如果您的应用以 Android 13 为目标平台，并且在后台运行时需要访问身体传感器信息，那么除了现有的BODY_SENSORS权限外，您还必须声明新的BODY_SENSORS_BACKGROUND权限。
      */
-    @RequiresApi(33)
     public static final String BODY_SENSORS_BACKGROUND = "android.permission.BODY_SENSORS_BACKGROUND";
 
     public static final String SEND_SMS = "android.permission.SEND_SMS";
@@ -110,29 +120,33 @@ public class Permission {
      */
     public static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
     /**
+     * Android 13（API 级别 33） 添加
      * 从Android 13开始，以Android13（API 33）为目标平台的应用，系统新增运行时权限READ_MEDIA_IMAGES、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO 替代原有的READ_EXTERNAL_STORAGE权限。
      * 如果用户之前向您的应用授予了 READ_EXTERNAL_STORAGE 权限，系统会自动向您的应用授予细化的媒体权限。
      * 如果您同时请求 READ_MEDIA_IMAGES 权限和 READ_MEDIA_VIDEO 权限，系统只会显示一个系统权限对话框。
      */
-    @RequiresApi(33)
     public static final String READ_MEDIA_IMAGES = "android.permission.READ_MEDIA_IMAGES";
-    @RequiresApi(33)
+    /**
+     * Android 13（API 级别 33） 添加
+     */
     public static final String READ_MEDIA_VIDEO = "android.permission.READ_MEDIA_VIDEO";
-    @RequiresApi(33)
+    /**
+     * Android 13（API 级别 33） 添加
+     */
     public static final String READ_MEDIA_AUDIO = "android.permission.READ_MEDIA_AUDIO";
     /**
-     * 从Android 14开始，如果您声明了 READ_MEDIA_VISUAL_USER_SELECTED 权限，并且用户在系统权限对话框中选择了选择照片和视频，则会发生以下行为：
+     * Android 14（API 级别 34） 添加
+     * 1、从Android 14开始，如果您manifest声明了 READ_MEDIA_VISUAL_USER_SELECTED 权限，并且用户在系统权限对话框中选择了选择照片和视频，则会发生以下行为：
      * <p>
      * READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限都会被拒绝。
      * 会授予 READ_MEDIA_VISUAL_USER_SELECTED 权限，可提供对用户照片和视频的部分和临时访问权限。
      * 如果您的应用需要访问其他照片和视频，您必须再次手动请求 READ_MEDIA_IMAGES 权限和/或 READ_MEDIA_VIDEO 权限。
      * <p>
-     * 从Android 14开始，如果您未声明 READ_MEDIA_VISUAL_USER_SELECTED 权限，则会发生以下行为：
+     * 2、从Android 14开始，如果您manifest未声明 READ_MEDIA_VISUAL_USER_SELECTED 权限，则会发生以下行为：
      * <p>
      * 在应用会话期间会授予 READ_MEDIA_IMAGES 和 READ_MEDIA_VIDEO 权限，从而提供对用户选择的照片和视频的临时授权和临时访问权限。当您的应用转到后台或当用户主动终止您的应用时，系统最终会拒绝这些权限。此行为就像其他单次授权一样。
      * 如果您的应用稍后需要访问其他照片和视频，您必须再次手动请求 READ_MEDIA_IMAGES 权限或 READ_MEDIA_VIDEO 权限。系统遵循与初始权限请求相同的流程，提示用户选择照片和视频。
      */
-    @RequiresApi(34)
     public static final String READ_MEDIA_VISUAL_USER_SELECTED = "android.permission.READ_MEDIA_VISUAL_USER_SELECTED";
     /**
      * 写入权限在Android11中被废弃，Android10中可以通过requestLegacyExternalStorage关闭沙盒存储
@@ -143,25 +157,29 @@ public class Permission {
     public static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
 
     /**
+     * Android 13（API 级别 33）
      * Android 13 引入了NEARBY_WIFI_DEVICES运行时权限，适用于会管理设备与附近 Wi-Fi 接入点连接情况的应用。
      * 借助此权限，您可以更轻松地说明应用为何访问附近的 Wi-Fi 设备；
      * 在以前的 Android 版本中，这类应用需要声明ACCESS_FINE_LOCATION权限。
      * 如果您的应用以 Android 13 为目标平台并调用多个不同的 Wi-Fi API，则必须从用户处获得这项新权限。
      * 如果您的应用尝试在未获得适当权限的情况下调用 Wi-Fi API，则会发生SecurityException。
      */
-    @RequiresApi(33)
     public static final String NEARBY_WIFI_DEVICES = "android.permission.NEARBY_WIFI_DEVICES";
 
-    @RequiresApi(29)
+    /**
+     * Android 10（API 级别 29） 添加
+     */
     public static final String ACCESS_MEDIA_LOCATION = "android.permission.ACCESS_MEDIA_LOCATION";
 
-    @RequiresApi(31)
+    /**
+     * Android 12（API 级别 31） 添加
+     */
     public static final String UWB_RANGING = "android.permission.UWB_RANGING";
 
     /**
+     * Android 11（API 级别 30） 添加
      * 如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
      */
-    @RequiresApi(30)
     public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";
 
     public static final class Group {
