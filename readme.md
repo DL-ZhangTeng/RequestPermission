@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
-        
+
         Boolean isRequestPermissions = (Boolean) SPUtilsKt.getFromSP(this, "isRequestPermissions", false, "currentUser");
         if (Boolean.TRUE.equals(isRequestPermissions)) {
             //用于再次请求权限
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements Request {
                     }
                 })
                 .build();
-        
+
         Boolean isRequestPermissions = (Boolean) SPUtilsKt.getFromSP(this, "isRequestPermissions", false, "currentUser");
         if (Boolean.TRUE.equals(isRequestPermissions)) {
             //用于再次请求权限
@@ -155,17 +155,17 @@ public class MainActivity extends AppCompatActivity implements Request {
 
 ## 历史版本
 
-| 版本     | 更新                     | 更新时间               |
-|--------|------------------------|--------------------|
-| v1.4.0 | Android14的新增权限兼容       | 2023/6/19 at 00:00 |
-| v1.3.0 | 权限请求被拒绝再次请求权限跳转设置页面    | 2023/4/10 at 18:00 |
-| v1.2.2 | Android12、13的新增权限兼容    | 2023/3/3 at 12:00  |
-| v1.2.1 | Android11的存储写入权限拒绝结果过滤 | 2023/2/14 at 0:07  |
-| v1.2.0 | 重新构建                   | 2022/1/26 at 12:42 |
-| v1.1.5 | 兼容Android11的存储权限       | 2021/6/11 at 15:29 |
-| v1.1.4 | 支持自定义Request           | 25 April 2021      |
-| v1.1.0 | 迁移到androidx            | 22 July 2020       |
-| v1.0.0 | 内存优化                   | 15 May 2020        |
+| 版本     | 更新                                            | 更新时间               |
+|--------|-----------------------------------------------|--------------------|
+| v1.4.0 | Android14的新增权限READ_MEDIA_VISUAL_USER_SELECTED | 2023/6/19 at 00:00 |
+| v1.3.0 | 权限请求被拒绝再次请求权限跳转设置页面                           | 2023/4/10 at 18:00 |
+| v1.2.2 | Android12、13的新增权限兼容                           | 2023/3/3 at 12:00  |
+| v1.2.1 | Android11的存储写入权限拒绝结果过滤                        | 2023/2/14 at 0:07  |
+| v1.2.0 | 重新构建                                          | 2022/1/26 at 12:42 |
+| v1.1.5 | 兼容Android11的存储权限                              | 2021/6/11 at 15:29 |
+| v1.1.4 | 支持自定义Request                                  | 25 April 2021      |
+| v1.1.0 | 迁移到androidx                                   | 22 July 2020       |
+| v1.0.0 | 内存优化                                          | 15 May 2020        |
 
 ## 赞赏
 
