@@ -73,14 +73,13 @@ public final class PermissionActivity extends Activity {
         if (mcallback != null) {
             if (requestCode == permissionsCode) {
                 if (grantResults.length > 0) {
-                    for (int i = 0; i < grantResults.length; i++) {
-                        int grantResult = grantResults[i];
+                    int[] processedGrantResults = VerifyUtils.grantResults(permissions, grantResults);
+                    for (int grantResult : processedGrantResults) {
                         if (grantResult == PackageManager.PERMISSION_DENIED) {
-                            if (VerifyUtils.isProcessResult(permissions[i])) {
-                                mcallback.failure(this);
-                                mcallback = null;
-                                finish();
-                            }
+                            mcallback.failure(this);
+                            mcallback = null;
+                            finish();
+                            return;
                         }
                     }
                     mcallback.success(this);

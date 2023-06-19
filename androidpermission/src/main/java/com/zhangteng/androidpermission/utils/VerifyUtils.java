@@ -1,11 +1,13 @@
 package com.zhangteng.androidpermission.utils;
 
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
 import com.zhangteng.androidpermission.Permission;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * description: 权限版本校验工具
@@ -13,6 +15,56 @@ import java.util.Arrays;
  * date: 2023/6/17
  */
 public class VerifyUtils {
+    /**
+     * description 处理授权结果
+     * 1、不需要处理的权限结果重置为PackageManager.PERMISSION_GRANTED；
+     * 2、Android14（api34）READ_MEDIA_VISUAL_USER_SELECTED授权后认为READ_MEDIA_IMAGES、READ_MEDIA_VIDEO被授权
+     *
+     * @param permissions  权限列表
+     * @param grantResults 授权结果
+     * @return 处理后的授权结果
+     */
+    public static int[] grantResults(String[] permissions, int[] grantResults) {
+        //如果授权结果与权限列表长度不一致直接返回grantResults
+        if (grantResults.length != permissions.length) {
+            return grantResults;
+        }
+
+        //如果不需要处理权限请求结果，将结果重置为授权PackageManager.PERMISSION_GRANTED
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                if (!isProcessResult(permissions[i])) {
+                    grantResults[i] = PackageManager.PERMISSION_GRANTED;
+                }
+            }
+        }
+
+        //Android14 api34以下3个权限同时请求时READ_MEDIA_VISUAL_USER_SELECTED授权后认为READ_MEDIA_IMAGES、READ_MEDIA_VIDEO被授权
+        //Permission.READ_MEDIA_IMAGES
+        //Permission.READ_MEDIA_VIDEO
+        //Permission.READ_MEDIA_VISUAL_USER_SELECTED
+        List<String> permissionList = Arrays.asList(permissions);
+
+        int readMediaVisualUserSelectedGrantResults = PackageManager.PERMISSION_DENIED;
+        int readMediaVisualUserSelectedIndex = permissionList.indexOf(Permission.READ_MEDIA_VISUAL_USER_SELECTED);
+        if (readMediaVisualUserSelectedIndex >= 0) {
+            readMediaVisualUserSelectedGrantResults = grantResults[readMediaVisualUserSelectedIndex];
+        }
+
+        if (readMediaVisualUserSelectedGrantResults == PackageManager.PERMISSION_GRANTED) {
+
+            int readMediaImageIndex = permissionList.indexOf(Permission.READ_MEDIA_IMAGES);
+            int readMediaVideoIndex = permissionList.indexOf(Permission.READ_MEDIA_VIDEO);
+            if (readMediaImageIndex >= 0) {
+                grantResults[readMediaImageIndex] = PackageManager.PERMISSION_GRANTED;
+            }
+            if (readMediaVideoIndex >= 0) {
+                grantResults[readMediaVideoIndex] = PackageManager.PERMISSION_GRANTED;
+            }
+        }
+        return grantResults;
+    }
+
     /**
      * description 是否需要处理该权限检测&显示权弹窗业务
      *
