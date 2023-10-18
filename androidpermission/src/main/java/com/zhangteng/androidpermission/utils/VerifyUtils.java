@@ -35,7 +35,7 @@ public class VerifyUtils {
         //如果不需要处理权限请求结果，将结果重置为授权PackageManager.PERMISSION_GRANTED
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                if (!isProcessResult(context, permissions[i])) {
+                if (!isProcessResult(permissions[i])) {
                     grantResults[i] = PackageManager.PERMISSION_GRANTED;
                 }
             }
@@ -83,7 +83,7 @@ public class VerifyUtils {
      * @param permission 权限
      * @return true 需要 false 不需要
      */
-    public static boolean isProcess(Context context, String permission) {
+    public static boolean isProcess(String permission) {
         // 11 +READ_PHONE_NUMBERS
         // 11 +MANAGE_EXTERNAL_STORAGE
         // 11 -WRITE_EXTERNAL_STORAGE
@@ -101,33 +101,23 @@ public class VerifyUtils {
         // 13 +POST_NOTIFICATIONS
 
         // 14 +READ_MEDIA_VISUAL_USER_SELECTED
-        if (Build.VERSION.SDK_INT >= 34) {
+        int devicesVersion = Build.VERSION.SDK_INT;
+        if (devicesVersion >= 34) {
             //运行在Android14及以上时忽略14及以下废除的权限请求失败
-            if (!isRemovedPermission(34, permission)) {
-                return true;
-            }
-        } else if (Build.VERSION.SDK_INT == 33) {
+            return !isRemovedPermission(34, permission);
+        } else if (devicesVersion == 33) {
             //运行在Android13及以上时忽略14及以上新增的权限与13及以下废除的权限请求失败
-            if (!isAddedPermission(34, permission) && !isRemovedPermission(33, permission)) {
-                return true;
-            }
-        } else if (Build.VERSION.SDK_INT >= 31) {
+            return !isAddedPermission(34, permission) && !isRemovedPermission(33, permission);
+        } else if (devicesVersion >= 31) {
             //运行在Android12及以上时忽略13及以上新增的权限与12及以下废除的权限请求失败
-            if (!isAddedPermission(33, permission) && !isRemovedPermission(31, permission)) {
-                return true;
-            }
-        } else if (Build.VERSION.SDK_INT == 30) {
+            return !isAddedPermission(33, permission) && !isRemovedPermission(31, permission);
+        } else if (devicesVersion == 30) {
             //运行在Android11及以上时忽略12及以上新增的权限与11及以下废除的权限请求失败
-            if (!isAddedPermission(31, permission) && !isRemovedPermission(30, permission)) {
-                return true;
-            }
+            return !isAddedPermission(31, permission) && !isRemovedPermission(30, permission);
         } else {
             //运行在Android10及以下时忽略11及以上新增权限请求失败
-            if (!isAddedPermission(30, permission)) {
-                return true;
-            }
+            return !isAddedPermission(30, permission);
         }
-        return false;
     }
 
     /**
@@ -214,11 +204,11 @@ public class VerifyUtils {
      * @param permission 权限
      * @return true 需要 false 不需要
      */
-    public static boolean isProcessResult(Context context, String permission) {
+    public static boolean isProcessResult(String permission) {
         if (isManageExternalStorage(permission)) {
             return false;
         }
-        return isProcess(context, permission);
+        return isProcess(permission);
     }
 
     /**

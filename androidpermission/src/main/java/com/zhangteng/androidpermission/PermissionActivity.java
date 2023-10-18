@@ -97,8 +97,8 @@ public final class PermissionActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == permissionsCode && Build.VERSION.SDK_INT >= 30) {
-            if (Environment.isExternalStorageManager()) {
+        if (requestCode == permissionsCode) {
+            if (VerifyUtils.hasManageExternalStorage(permissions)) {
                 requestPermissions(permissions, permissionsCode);
             } else {
                 if (mcallback != null) {

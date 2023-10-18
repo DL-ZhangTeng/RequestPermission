@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -159,8 +157,8 @@ public class AndroidPermission {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (callback != null && source != null) {
             Activity activity = source.getContext() instanceof Activity ? (Activity) source.getContext() : null;
-            if (requestCode == PERMISSION_CODE && Build.VERSION.SDK_INT >= 30) {
-                if (Environment.isExternalStorageManager()) {
+            if (requestCode == PERMISSION_CODE) {
+                if (VerifyUtils.hasManageExternalStorage(Permission.MANAGE_EXTERNAL_STORAGE)) {
                     requestPermissions();
                 } else {
                     if (callback != null) {

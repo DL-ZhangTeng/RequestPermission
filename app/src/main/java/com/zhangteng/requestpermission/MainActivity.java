@@ -68,16 +68,14 @@ public class MainActivity extends AppCompatActivity implements Request {
     @Override
     public void requestPermissions(Context context, int permissionCode, Callback callback) {
         //如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
-        if (Build.VERSION.SDK_INT >= 30) {
-            if (VerifyUtils.hasManageExternalStorage(permissions)) {
+        if (VerifyUtils.hasManageExternalStorage(permissions)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(permissions, permissionCode);
-            } else {
-                Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                intent1.setData(Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent1, permissionCode);
             }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(permissions, permissionCode);
+        } else {
+            Intent intent1 = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent1.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent1, permissionCode);
         }
     }
 

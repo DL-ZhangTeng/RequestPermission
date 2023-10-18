@@ -24,14 +24,10 @@ public class StandardChecker implements Checker {
     public boolean hasPermission(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             for (String permission : permissions) {
-                if (VerifyUtils.isProcess(context, permission)) {
+                if (VerifyUtils.isProcess(permission)) {
                     //如果是Android11并且请求存储管理权限时检查权限
-                    if (VerifyUtils.isManageExternalStorage(permission)) {
-                        if (!VerifyUtils.hasManageExternalStorage(permission)) {
-                            return false;
-                        } else {
-                            continue;
-                        }
+                    if (!VerifyUtils.hasManageExternalStorage(permission)) {
+                        return false;
                     }
 
                     int result = context.checkPermission(permission, android.os.Process.myPid(), android.os.Process.myUid());
