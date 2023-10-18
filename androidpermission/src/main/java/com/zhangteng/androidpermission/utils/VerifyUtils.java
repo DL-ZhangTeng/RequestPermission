@@ -35,7 +35,7 @@ public class VerifyUtils {
         //如果不需要处理权限请求结果，将结果重置为授权PackageManager.PERMISSION_GRANTED
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                if (!isProcessResult(permissions[i])) {
+                if (!isProcessResult(context, permissions[i])) {
                     grantResults[i] = PackageManager.PERMISSION_GRANTED;
                 }
             }
@@ -83,7 +83,7 @@ public class VerifyUtils {
      * @param permission 权限
      * @return true 需要 false 不需要
      */
-    public static boolean isProcess(String permission) {
+    public static boolean isProcess(Context context, String permission) {
         // 11 +READ_PHONE_NUMBERS
         // 11 +MANAGE_EXTERNAL_STORAGE
         // 11 -WRITE_EXTERNAL_STORAGE
@@ -102,59 +102,106 @@ public class VerifyUtils {
 
         // 14 +READ_MEDIA_VISUAL_USER_SELECTED
         if (Build.VERSION.SDK_INT >= 34) {
-            //运行在Android14及以上时忽略14以上新增的权限与14及以下废除的权限请求失败
-            if (!Permission.WRITE_EXTERNAL_STORAGE.equals(permission)
-                    && !Permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+            //运行在Android14及以上时忽略14及以下废除的权限请求失败
+            if (!isRemovedPermission(34, permission)) {
                 return true;
             }
         } else if (Build.VERSION.SDK_INT == 33) {
             //运行在Android13及以上时忽略14及以上新增的权限与13及以下废除的权限请求失败
-            if (!Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)
-                    && !Permission.WRITE_EXTERNAL_STORAGE.equals(permission)
-                    && !Permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+            if (!isAddedPermission(34, permission) && !isRemovedPermission(33, permission)) {
                 return true;
             }
         } else if (Build.VERSION.SDK_INT >= 31) {
-            //运行在Android12及以上时忽略13及以上新增的权限与12级以下废除的权限请求失败
-            if (!Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)
-                    && !Permission.READ_MEDIA_IMAGES.equals(permission)
-                    && !Permission.READ_MEDIA_VIDEO.equals(permission)
-                    && !Permission.READ_MEDIA_AUDIO.equals(permission)
-                    && !Permission.NEARBY_WIFI_DEVICES.equals(permission)
-                    && !Permission.BODY_SENSORS_BACKGROUND.equals(permission)
-                    && !Permission.POST_NOTIFICATIONS.equals(permission)
-                    && !Permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+            //运行在Android12及以上时忽略13及以上新增的权限与12及以下废除的权限请求失败
+            if (!isAddedPermission(33, permission) && !isRemovedPermission(31, permission)) {
                 return true;
             }
         } else if (Build.VERSION.SDK_INT == 30) {
-            //运行在Android11及以上时忽略12及以上新增的权限与11级以下废除的权限请求失败
-            if (!Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)
-                    && !Permission.READ_MEDIA_IMAGES.equals(permission)
-                    && !Permission.READ_MEDIA_VIDEO.equals(permission)
-                    && !Permission.READ_MEDIA_AUDIO.equals(permission)
-                    && !Permission.BLUETOOTH_SCAN.equals(permission)
-                    && !Permission.BLUETOOTH_ADVERTISE.equals(permission)
-                    && !Permission.BLUETOOTH_CONNECT.equals(permission)
-                    && !Permission.NEARBY_WIFI_DEVICES.equals(permission)
-                    && !Permission.BODY_SENSORS_BACKGROUND.equals(permission)
-                    && !Permission.POST_NOTIFICATIONS.equals(permission)
-                    && !Permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+            //运行在Android11及以上时忽略12及以上新增的权限与11及以下废除的权限请求失败
+            if (!isAddedPermission(31, permission) && !isRemovedPermission(30, permission)) {
                 return true;
             }
         } else {
-            //运行在Android10及以下时忽略10及以上新增权限请求失败
-            if (!Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)
-                    && !Permission.READ_PHONE_NUMBERS.equals(permission)
-                    && !Permission.READ_MEDIA_IMAGES.equals(permission)
-                    && !Permission.READ_MEDIA_VIDEO.equals(permission)
-                    && !Permission.READ_MEDIA_AUDIO.equals(permission)
-                    && !Permission.BLUETOOTH_SCAN.equals(permission)
-                    && !Permission.BLUETOOTH_ADVERTISE.equals(permission)
-                    && !Permission.BLUETOOTH_CONNECT.equals(permission)
-                    && !Permission.NEARBY_WIFI_DEVICES.equals(permission)
-                    && !Permission.BODY_SENSORS_BACKGROUND.equals(permission)
-                    && !Permission.POST_NOTIFICATIONS.equals(permission)
-                    && !Permission.MANAGE_EXTERNAL_STORAGE.equals(permission)) {
+            //运行在Android10及以下时忽略11及以上新增权限请求失败
+            if (!isAddedPermission(30, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * description 是否是api版本及以上新增的权限
+     *
+     * @param apiVersion api版本
+     * @param permission 权限
+     * @return true 新增权限 false 不是新增权限
+     */
+    public static boolean isAddedPermission(int apiVersion, String permission) {
+        // 14 +READ_MEDIA_VISUAL_USER_SELECTED
+        if (apiVersion >= 34) {
+            if (Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)) {
+                return true;
+            }
+        }
+
+        // 13 +READ_MEDIA_IMAGES
+        // 13 +READ_MEDIA_VIDEO
+        // 13 +READ_MEDIA_AUDIO
+        // 13 +NEARBY_WIFI_DEVICES
+        // 13 +BODY_SENSORS_BACKGROUND
+        // 13 +POST_NOTIFICATIONS
+        if (apiVersion >= 33) {
+            if (Permission.READ_MEDIA_IMAGES.equals(permission)
+                    || Permission.READ_MEDIA_VIDEO.equals(permission)
+                    || Permission.READ_MEDIA_AUDIO.equals(permission)
+                    || Permission.NEARBY_WIFI_DEVICES.equals(permission)
+                    || Permission.BODY_SENSORS_BACKGROUND.equals(permission)
+                    || Permission.POST_NOTIFICATIONS.equals(permission)) {
+                return true;
+            }
+        }
+
+        // 12 +Permission.BLUETOOTH_SCAN
+        // 12 +Permission.BLUETOOTH_ADVERTISE
+        // 12 +Permission.BLUETOOTH_CONNECT
+        if (apiVersion >= 31) {
+            if (Permission.BLUETOOTH_SCAN.equals(permission)
+                    || Permission.BLUETOOTH_ADVERTISE.equals(permission)
+                    || Permission.BLUETOOTH_CONNECT.equals(permission)) {
+                return true;
+            }
+        }
+
+        // 11 +READ_PHONE_NUMBERS
+        // 11 +MANAGE_EXTERNAL_STORAGE
+        if (apiVersion >= 30) {
+            if (Permission.READ_PHONE_NUMBERS.equals(permission)
+                    || Permission.MANAGE_EXTERNAL_STORAGE.equals(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * description 是否是api版本及以下被移除的权限
+     *
+     * @param apiVersion api版本
+     * @param permission 权限
+     * @return true 新增权限 false 不是新增权限
+     */
+    public static boolean isRemovedPermission(int apiVersion, String permission) {
+        // 13 -READ_EXTERNAL_STORAGE
+        if (apiVersion >= 33) {
+            if (Permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+                return true;
+            }
+        }
+
+        // 11 -WRITE_EXTERNAL_STORAGE
+        if (apiVersion >= 30) {
+            if (Permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
                 return true;
             }
         }
@@ -167,11 +214,11 @@ public class VerifyUtils {
      * @param permission 权限
      * @return true 需要 false 不需要
      */
-    public static boolean isProcessResult(String permission) {
+    public static boolean isProcessResult(Context context, String permission) {
         if (isManageExternalStorage(permission)) {
             return false;
         }
-        return isProcess(permission);
+        return isProcess(context, permission);
     }
 
     /**
