@@ -41,7 +41,7 @@ public class StandardRationale implements Rationale {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context instanceof Activity) {
                 for (String permission : permissions) {
-                    if (VerifyUtils.isProcess(permission)) {
+                    if (VerifyUtils.isProcess(context, permission)) {
                         if (((Activity) context).shouldShowRequestPermissionRationale(permission)) {
                             return true;
                         }
