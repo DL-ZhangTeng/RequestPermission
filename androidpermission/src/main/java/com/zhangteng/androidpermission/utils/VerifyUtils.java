@@ -97,23 +97,33 @@ public class VerifyUtils {
      * @return true 需要 false 不需要
      */
     public static boolean isProcess(Context context, String permission) {
-        // 11 +READ_PHONE_NUMBERS
-        // 11 +MANAGE_EXTERNAL_STORAGE
-        // 11 -WRITE_EXTERNAL_STORAGE
+        // 8(26) +ANSWER_PHONE_CALLS
+        // 8(26) +READ_PHONE_NUMBERS
 
-        // 12 +Permission.BLUETOOTH_SCAN
-        // 12 +Permission.BLUETOOTH_ADVERTISE
-        // 12 +Permission.BLUETOOTH_CONNECT
+        // 9(28) +ACCEPT_HANDOVER
 
-        // 13 +READ_MEDIA_IMAGES
-        // 13 +READ_MEDIA_VIDEO
-        // 13 +READ_MEDIA_AUDIO
-        // 13 -READ_EXTERNAL_STORAGE
-        // 13 +NEARBY_WIFI_DEVICES
-        // 13 +BODY_SENSORS_BACKGROUND
-        // 13 +POST_NOTIFICATIONS
+        // 10(29) +ACTIVITY_RECOGNITION
+        // 10(29) -PROCESS_OUTGOING_CALLS
+        // 10(29) +ACCESS_BACKGROUND_LOCATION
+        // 10(29) +ACCESS_MEDIA_LOCATION
 
-        // 14 +READ_MEDIA_VISUAL_USER_SELECTED
+        // 11(30) +MANAGE_EXTERNAL_STORAGE
+        // 11(30) -WRITE_EXTERNAL_STORAGE
+
+        // 12(31) +BLUETOOTH_SCAN
+        // 12(31) +BLUETOOTH_ADVERTISE
+        // 12(31) +BLUETOOTH_CONNECT
+        // 12(31) +UWB_RANGING
+
+        // 13(33) +READ_MEDIA_IMAGES
+        // 13(33) +READ_MEDIA_VIDEO
+        // 13(33) +READ_MEDIA_AUDIO
+        // 13(33) -READ_EXTERNAL_STORAGE
+        // 13(33) +NEARBY_WIFI_DEVICES
+        // 13(33) +BODY_SENSORS_BACKGROUND
+        // 13(33) +POST_NOTIFICATIONS
+
+        // 14(34) +READ_MEDIA_VISUAL_USER_SELECTED
         int devicesVersion = Build.VERSION.SDK_INT;
         int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
         int minVersion = Math.min(devicesVersion, targetSdkVersion);
@@ -129,9 +139,18 @@ public class VerifyUtils {
         } else if (devicesVersion == 30) {
             //运行在Android11及以上时忽略12及以上新增的权限与targetSdkVersion及以下废除的权限请求失败
             return !isAddedPermission(31, permission) && !isRemovedPermission(minVersion, permission);
+        } else if (devicesVersion == 29) {
+            //运行在Android10及以上时忽略11及以上新增的权限与targetSdkVersion及以下废除的权限请求失败
+            return !isAddedPermission(30, permission) && !isRemovedPermission(minVersion, permission);
+        } else if (devicesVersion == 28) {
+            //运行在Android9及以上时忽略10及以上新增的权限与targetSdkVersion及以下废除的权限请求失败
+            return !isAddedPermission(29, permission) && !isRemovedPermission(minVersion, permission);
+        } else if (devicesVersion >= 26) {
+            //运行在Android8及以上时忽略9及以上新增的权限与targetSdkVersion及以下废除的权限请求失败
+            return !isAddedPermission(28, permission) && !isRemovedPermission(minVersion, permission);
         } else {
-            //运行在Android10及以下时忽略11及以上新增权限请求失败
-            return !isAddedPermission(30, permission);
+            //运行在Android7及以下时忽略8及以上新增权限请求失败
+            return !isAddedPermission(26, permission);
         }
     }
 
@@ -144,30 +163,50 @@ public class VerifyUtils {
      */
     public static boolean isAddedPermission(int apiVersion, String permission) {
         switch (apiVersion) {
+            case 26:
+                // 8(26) +ANSWER_PHONE_CALLS
+                // 8(26) +READ_PHONE_NUMBERS
+                if (Permission.ANSWER_PHONE_CALLS.equals(permission)
+                        || Permission.READ_PHONE_NUMBERS.equals(permission)) {
+                    return true;
+                }
+            case 28:
+                // 9(28) +ACCEPT_HANDOVER
+                if (Permission.ACCEPT_HANDOVER.equals(permission)) {
+                    return true;
+                }
+            case 29:
+                // 10(29) +ACTIVITY_RECOGNITION
+                // 10(29) +ACCESS_BACKGROUND_LOCATION
+                // 10(29) +ACCESS_MEDIA_LOCATION
+                if (Permission.ACTIVITY_RECOGNITION.equals(permission)
+                        || Permission.ACCESS_BACKGROUND_LOCATION.equals(permission)
+                        || Permission.ACCESS_MEDIA_LOCATION.equals(permission)) {
+                    return true;
+                }
             case 30:
-                // 11 +READ_PHONE_NUMBERS
-                // 11 +MANAGE_EXTERNAL_STORAGE
-                if (Permission.READ_PHONE_NUMBERS.equals(permission)
-                        || Permission.MANAGE_EXTERNAL_STORAGE.equals(permission)) {
+                // 11(30) +MANAGE_EXTERNAL_STORAGE
+                if (Permission.MANAGE_EXTERNAL_STORAGE.equals(permission)) {
                     return true;
                 }
             case 31:
             case 32:
-                // 12 +Permission.BLUETOOTH_SCAN
-                // 12 +Permission.BLUETOOTH_ADVERTISE
-                // 12 +Permission.BLUETOOTH_CONNECT
+                // 12(31) +BLUETOOTH_SCAN
+                // 12(31) +BLUETOOTH_ADVERTISE
+                // 12(31) +BLUETOOTH_CONNECT
+                // 12(31) +UWB_RANGING
                 if (Permission.BLUETOOTH_SCAN.equals(permission)
                         || Permission.BLUETOOTH_ADVERTISE.equals(permission)
                         || Permission.BLUETOOTH_CONNECT.equals(permission)) {
                     return true;
                 }
             case 33:
-                // 13 +READ_MEDIA_IMAGES
-                // 13 +READ_MEDIA_VIDEO
-                // 13 +READ_MEDIA_AUDIO
-                // 13 +NEARBY_WIFI_DEVICES
-                // 13 +BODY_SENSORS_BACKGROUND
-                // 13 +POST_NOTIFICATIONS
+                // 13(33) +READ_MEDIA_IMAGES
+                // 13(33) +READ_MEDIA_VIDEO
+                // 13(33) +READ_MEDIA_AUDIO
+                // 13(33) +NEARBY_WIFI_DEVICES
+                // 13(33) +BODY_SENSORS_BACKGROUND
+                // 13(33) +POST_NOTIFICATIONS
                 if (Permission.READ_MEDIA_IMAGES.equals(permission)
                         || Permission.READ_MEDIA_VIDEO.equals(permission)
                         || Permission.READ_MEDIA_AUDIO.equals(permission)
@@ -177,7 +216,7 @@ public class VerifyUtils {
                     return true;
                 }
             case 34:
-                // 14 +READ_MEDIA_VISUAL_USER_SELECTED
+                // 14(34) +READ_MEDIA_VISUAL_USER_SELECTED
                 if (Permission.READ_MEDIA_VISUAL_USER_SELECTED.equals(permission)) {
                     return true;
                 }
@@ -196,17 +235,24 @@ public class VerifyUtils {
         switch (apiVersion) {
             case 34:
             case 33:
-                // 13 -READ_EXTERNAL_STORAGE
+                // 13(33) -READ_EXTERNAL_STORAGE
                 if (Permission.READ_EXTERNAL_STORAGE.equals(permission)) {
                     return true;
                 }
             case 32:
             case 31:
             case 30:
-                // 11 -WRITE_EXTERNAL_STORAGE
+                // 11(30) -WRITE_EXTERNAL_STORAGE
                 if (Permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
                     return true;
                 }
+            case 29:
+                // 10(29) -PROCESS_OUTGOING_CALLS
+                if (Permission.PROCESS_OUTGOING_CALLS.equals(permission)) {
+                    return true;
+                }
+            case 28:
+            case 26:
         }
         return false;
     }

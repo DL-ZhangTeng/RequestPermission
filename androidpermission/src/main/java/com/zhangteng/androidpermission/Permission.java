@@ -178,7 +178,7 @@ public class Permission {
 
     /**
      * Android 11（API 级别 30） 添加
-     * 如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限
+     * 如果Android11存储权限与其它Android6权限同时请求时，先请求MANAGE_EXTERNAL_STORAGE权限，非危险权限
      */
     public static final String MANAGE_EXTERNAL_STORAGE = "android.permission.MANAGE_EXTERNAL_STORAGE";
 
